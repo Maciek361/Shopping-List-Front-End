@@ -40,23 +40,20 @@
         </ul>
       </div>
       <div class="flex justify-center">
-        <button
-          @click="displayList = !displayList"
-          class="text-white h-16 flex justify-center items-center mt-14 rounded-3xl bg-green-700 btn-size"
-        >
-          Stwórz nową listę
-        </button>
+        <router-link to="/createShoppingList">
+          <button
+            class="text-white h-16 flex justify-center items-center mt-14 rounded-3xl bg-green-700 btn-size"
+          >
+            Stwórz nową listę
+          </button>
+        </router-link>
       </div>
     </div>
-    <ShoppingList v-if="displayList"></ShoppingList>
   </div>
 </template>
 <script setup>
 import { Icon } from "@iconify/vue";
 import { ref } from "vue";
-import ShoppingList from "./shoppingList.vue";
-
-const displayList = ref(false);
 
 const productGroup = ref([
   {

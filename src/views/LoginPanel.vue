@@ -1,6 +1,6 @@
 <template>
   <div class="m-10 flex items-center justify-center">
-    <div class="bg-white p-6 rounded shadow-md w-96">
+    <div class="bg-white p-6 rounded shadow-xl w-96">
       <h2 class="text-2xl font-semibold mb-4">Zaloguj się</h2>
 
       <form @submit.prevent="register">
@@ -41,22 +41,29 @@
               <Icon v-else icon="ph:eye-closed-light" class="w-5 h-5" />
             </span>
           </div>
+          <div class="mt-2 text-gray-600 text-sm text-left">
+            <router-link to="/reset-password" class="text-green-600"
+              >Nie pamiętasz hasła?</router-link
+            >
+          </div>
         </div>
-
-        <button
-          type="submit"
-          class="bg-green-600 text-white px-4 py-2 rounded focus:outline-none hover:bg-green-700 w-full"
-        >
-          Zaloguj
-        </button>
+        <router-link to="/home">
+          <button
+            type="submit"
+            class="bg-green-600 text-white px-4 py-2 rounded focus:outline-none hover:bg-green-700 w-full"
+          >
+            Zaloguj
+          </button>
+        </router-link>
+        <div class="mt-2 text-gray-600 text-sm text-left">
+          Nie masz jeszcze konta?
+          <router-link to="/register" class="text-green-600"
+            >Zarejestruj się</router-link
+          >
+        </div>
       </form>
-
-      <div class="mt-4 text-gray-600 text-sm text-center">
-        <router-link to="/login" class="text-green-600"
-          >Nie pamiętasz hasła?</router-link
-        >
-      </div>
     </div>
+    <ShoppingListHome v-if="displayHomePage"></ShoppingListHome>
   </div>
 </template>
 

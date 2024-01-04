@@ -80,13 +80,14 @@
             </span>
           </div>
         </div>
-
-        <button
-          type="submit"
-          class="bg-green-600 text-white px-4 py-2 rounded focus:outline-none hover:bg-green-700 w-full"
-        >
-          Zarejestruj się
-        </button>
+        <router-link to="/home">
+          <button
+            type="submit"
+            class="bg-green-600 text-white px-4 py-2 rounded focus:outline-none hover:bg-green-700 w-full"
+          >
+            Zarejestruj się
+          </button>
+        </router-link>
       </form>
 
       <div class="mt-4 text-gray-600 text-sm text-center">
@@ -102,7 +103,9 @@
 <script setup>
 import { ref } from "vue";
 import { Icon } from "@iconify/vue";
+
 const showPassword = ref(false);
+
 const form = ref({
   username: "",
   email: "",
