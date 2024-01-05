@@ -11,7 +11,7 @@
             >Imię i Nazwisko</label
           >
           <input
-            v-model="form.username"
+            v-model="form.name"
             id="username"
             name="username"
             type="text"
@@ -65,7 +65,7 @@
           >
           <div class="flex items-center">
             <input
-              v-model="form.repeatPassword"
+              v-model="form.password_confirmation"
               id="repeat-password"
               name="repeat-password"
               type="password"
@@ -84,6 +84,7 @@
         <button
           type="submit"
           class="bg-green-600 text-white px-4 py-2 rounded focus:outline-none hover:bg-green-700 w-full"
+          @click="registration"
         >
           Zarejestruj się
         </button>
@@ -102,16 +103,24 @@
 <script setup>
 import { ref } from "vue";
 import { Icon } from "@iconify/vue";
+import { register } from "../api/api";
+
 const showPassword = ref(false);
 const form = ref({
-  username: "",
+  name: "",
   email: "",
   password: "",
-  repeatPassword: "",
+  password_confirmation: "",
 });
 
-const register = () => {
-  console.log("Rejestracja...", form.value);
+const registration = () => {
+  register(form.value)
+    .then((response) => {
+      console.log("To jest ten response", response); //response.token odda mi token - potrzebuje vuex zeby trzymał info o wszystkim
+    })
+    .catch((error) => {
+      console.log(error);
+    });
 };
 const togglePasswordVisibility = () => {
   showPassword.value = !showPassword.value;
