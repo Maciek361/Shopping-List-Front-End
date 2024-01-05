@@ -104,7 +104,7 @@
 import { ref } from "vue";
 import { Icon } from "@iconify/vue";
 import { register } from "../api/api";
-
+import router from "../router/";
 const showPassword = ref(false);
 const form = ref({
   name: "",
@@ -117,6 +117,7 @@ const registration = () => {
   register(form.value)
     .then((response) => {
       console.log("To jest ten response", response); //response.token odda mi token - potrzebuje vuex zeby trzymał info o wszystkim
+      router.push("home");
     })
     .catch((error) => {
       console.log(error);
