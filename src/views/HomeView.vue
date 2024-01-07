@@ -1,7 +1,15 @@
 <template>
-  <div>show lists and show button to create new ones</div>
+  <div>
+    <ShoppingListHome></ShoppingListHome>
+  </div>
 </template>
 
-<script></script>
+<script>
+import ShoppingListHome from "../components/ShoppingListHome.vue";
+
+export default {
+  components: { ShoppingListHome },
+};
+</script>
 
 <style scoped></style>

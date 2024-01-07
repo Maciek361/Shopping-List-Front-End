@@ -13,18 +13,40 @@
           <Icon icon="ph:x" class="w-5 h-5" />
         </button>
       </div>
-      <div class="flex items-center">
-        <input
+      <form @submit.prevent="createList">
+        <div class="flex items-center">
+          <input
+            v-model="form.name"
+            id="name"
+            name="name"
+            placeholder="Podaj nazwę listy"
+            maxlength="30"
+            type="text"
+            class="text-xl mt-8 ml-5 border-b border-green-700 outline-none"
+          />
+          <button>
+            <Icon icon="material-symbols:edit" class="mt-8 ml-2" />
+          </button>
+        </div>
+        <!-- <input
+          v-model="formProduct.product_id"
+          id="productName"
+          name="productName"
+          placeholder="Dodaj produkt"
+          maxlength="30"
           type="text"
           class="text-xl mt-8 ml-5 border-b border-green-700 outline-none"
-          placeholder="Podaj nazwę listy"
-          maxlength="20"
         />
-        <button>
-          <Icon icon="material-symbols:edit" class="mt-8 ml-2" />
-        </button>
-      </div>
-      <div>
+        <button
+          @click="AddNewProduct"
+          class="my-8 bg-green-700 h-10 w-10 flex justify-center items-center rounded-3xl text-white"
+        >
+          <Icon icon="fluent-mdl2:accept-medium" class="w-5 h-5" />
+        </button> -->
+      </form>
+
+      <!-- // Poniżej div do wyswietlania produktów -->
+      <!-- <div>
         <h6 class="text-xs text-slate-400 font-bold mt-8 ml-5">Nabiał</h6>
       </div>
       <hr class="mx-5 mt-2" />
@@ -88,29 +110,24 @@
             type="text"
           />
         </li>
-      </ul>
+      </ul> -->
+      <!-- //dodawanie listy do bazy -->
       <div class="flex justify-around mx-20">
         <button
-          @click="displayAddProduct = !displayAddProduct"
-          class="my-8 bg-green-700 h-16 w-16 flex justify-center items-center rounded-3xl text-white"
-        >
-          <Icon icon="ic:baseline-plus" class="w-7 h-7" />
-        </button>
-        <button
-          @click="click"
+          @click="AddShoppingList"
           class="my-8 bg-green-700 h-16 w-16 flex justify-center items-center rounded-3xl text-white"
         >
           <Icon icon="fluent-mdl2:accept-medium" class="w-5 h-5" />
         </button>
       </div>
     </div>
-    <AddProduct v-if="displayAddProduct"></AddProduct>
   </div>
 </template>
 <script setup>
 import { Icon } from "@iconify/vue";
 import { ref, reactive } from "vue";
-import AddProduct from "./AddProduct.vue";
+import { CreateNewList } from "../api/api";
+import router from "../router/";
 const hideList = ref(false);
 const displayAddProduct = ref(false);
 const diary = reactive({
@@ -129,6 +146,32 @@ const coldCuts = reactive({
   item3: "Prosciutto Cotto",
 });
 const frozenStuff = reactive({});
+const form = ref({
+  name: "",
+});
+
+const AddShoppingList = () => {
+  try {
+    const token = localStorage.getItem("userToken");
+    // Sprawdź, czy token istnieje
+    if (!token) {
+      console.error("Brak tokena. Użytkownik nie jest zalogowany.");
+      return;
+    }
+    CreateNewList(form.value, token)
+      .then((response) => {
+        console.log("To jest ten response", response);
+        router.push("/");
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+
+    console.log("utworzono liste");
+  } catch (error) {
+    console.error("Wystąpił błąd podczas tworzenia listy:", error);
+  }
+};
 </script>
 <style>
 body {

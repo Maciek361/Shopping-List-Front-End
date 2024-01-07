@@ -46,6 +46,7 @@
         <button
           type="submit"
           class="bg-green-600 text-white px-4 py-2 rounded focus:outline-none hover:bg-green-700 w-full"
+          @click="loginFunction"
         >
           Zaloguj
         </button>
@@ -63,15 +64,26 @@
 <script setup>
 import { ref } from "vue";
 import { Icon } from "@iconify/vue";
+import router from "../router/";
+import { login } from "../api/api";
 
 const form = ref({
-  username: "",
   email: "",
   password: "",
 });
 
-const register = () => {
-  console.log("Rejestracja...", form.value);
+const loginFunction = () => {
+  login(form.value)
+    .then((response) => {
+      const token = response.data.token;
+      localStorage.setItem("userToken", token);
+      console.log("To jest ten response", response); //response.token odda mi token - potrzebuje vuex zeby trzymał info o wszystkim
+      router.push("/");
+    })
+    .catch((error) => {
+      console.log(error);
+    });
+  console.log("zalogowano");
 };
 const showPassword = ref(false);
 

@@ -5,15 +5,13 @@
 
       <form @submit.prevent="register">
         <div class="mb-4">
-          <label
-            for="username"
-            class="block text-gray-600 text-sm font-medium mb-2"
+          <label for="name" class="block text-gray-600 text-sm font-medium mb-2"
             >Imię i Nazwisko</label
           >
           <input
             v-model="form.name"
-            id="username"
-            name="username"
+            id="name"
+            name="name"
             type="text"
             class="w-full p-2 border border-gray-300 rounded focus:outline-none focus:border-green-600"
           />
@@ -45,7 +43,7 @@
               v-model="form.password"
               id="password"
               name="password"
-              type="password"
+              :type="showPassword ? 'text' : 'password'"
               class="w-full p-2 border border-gray-300 rounded focus:outline-none focus:border-green-600 pr-10"
             />
             <span
@@ -117,7 +115,7 @@ const registration = () => {
   register(form.value)
     .then((response) => {
       console.log("To jest ten response", response); //response.token odda mi token - potrzebuje vuex zeby trzymał info o wszystkim
-      router.push("home");
+      router.push("/"); //tutaj podaje co ma sie odpalic po wykonaniu akcji
     })
     .catch((error) => {
       console.log(error);
