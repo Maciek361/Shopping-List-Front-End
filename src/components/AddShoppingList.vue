@@ -126,7 +126,7 @@
 <script setup>
 import { Icon } from "@iconify/vue";
 import { ref, reactive } from "vue";
-import { CreateNewList } from "../api/api";
+import { createNewList } from "../api/api";
 import router from "../router/";
 const hideList = ref(false);
 const displayAddProduct = ref(false);
@@ -151,26 +151,8 @@ const form = ref({
 });
 
 const AddShoppingList = () => {
-  try {
-    const token = localStorage.getItem("userToken");
-    // Sprawdź, czy token istnieje
-    if (!token) {
-      console.error("Brak tokena. Użytkownik nie jest zalogowany.");
-      return;
-    }
-    CreateNewList(form.value, token)
-      .then((response) => {
-        console.log("To jest ten response", response);
-        router.push("/");
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-
-    console.log("utworzono liste");
-  } catch (error) {
-    console.error("Wystąpił błąd podczas tworzenia listy:", error);
-  }
+  // TODO utworz akcje w store js i wykonaj
+  // store.dispatch("createList", userId)
 };
 </script>
 <style>

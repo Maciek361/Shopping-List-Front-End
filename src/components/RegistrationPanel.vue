@@ -112,14 +112,14 @@ const form = ref({
 });
 
 const registration = () => {
-  register(form.value)
+  /* register(form.value)
     .then((response) => {
       console.log("To jest ten response", response); //response.token odda mi token - potrzebuje vuex zeby trzymał info o wszystkim
       router.push("/"); //tutaj podaje co ma sie odpalic po wykonaniu akcji
     })
     .catch((error) => {
       console.log(error);
-    });
+    }); */
 };
 const togglePasswordVisibility = () => {
   showPassword.value = !showPassword.value;

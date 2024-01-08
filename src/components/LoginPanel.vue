@@ -64,8 +64,7 @@
 <script setup>
 import { ref } from "vue";
 import { Icon } from "@iconify/vue";
-import router from "../router/";
-import { login } from "../api/api";
+import router from "../router";
 import store from "../store";
 
 const form = ref({
@@ -78,7 +77,6 @@ const loginFunction = () => {
     .dispatch("loginUser", form.value)
     .then(() => {
       router.push("/");
-      console.log("zalogowano");
     })
     .catch((error) => {
       console.error("Error during login:", error);

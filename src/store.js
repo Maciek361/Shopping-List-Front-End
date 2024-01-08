@@ -19,19 +19,21 @@ export default createStore({
     async loginUser({ commit }, userCredentials) {
       try {
         const response = await login(userCredentials); //tutaj są dane z inputów jakie podaje jak sie loguje
-        console.log("Tutaj user data", userCredentials);
+
         const token = response.data.token;
+
         localStorage.setItem("userToken", token);
-        console.log("token", token);
+
         commit("setUser", response.data.user); //commituje tylko mutations
       } catch (error) {
         console.error("Login failed:", error);
+        return Promise.reject(error);
       }
     },
     async userListFetch({ commit }, userId) {
       try {
         const response = await fetchUserList(userId);
-        console.log("dane listy", response.data);
+
         commit("setList", response.data);
       } catch (error) {
         console.error("Nie pobrano listy:", error);
@@ -41,5 +43,6 @@ export default createStore({
   getters: {
     getUserId: (state) => (state.user ? state.user.id : null),
     getShoppingLists: (state) => state.list,
+    isUserAuthenticated: (state) => state.user != null,
   },
 });

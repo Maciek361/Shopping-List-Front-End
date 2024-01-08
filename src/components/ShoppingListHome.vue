@@ -24,22 +24,30 @@
         <h6 class="text-slate-400 text-xs font-bold pt-7 ml-4">
           Utworzone listy
         </h6>
-        <ul>
-          <li
-            class="flex mx-3 mt-5 items-center"
-            v-for="item in shoppingList"
-            :key="item.id"
+        <div>
+          <div
+            v-if="!shoppingList.length"
+            class="no-lists text-xs font-bold pt-7 ml-4"
           >
-            <div class="w-10 h-10 bg-red-100 rounded-full"></div>
-            <div class="items-center ml-3">
-              <p class="">{{ item.name }}</p>
-              <p class="text-sm text-slate-400">produktów</p>
-            </div>
-            <button class="ml-auto mr-2 block">
-              <Icon icon="mdi:chevron-right" class="w-5 h-5" />
-            </button>
-          </li>
-        </ul>
+            Brak utwrzonych list!
+          </div>
+          <ul v-else>
+            <li
+              class="flex mx-3 mt-5 items-center"
+              v-for="item in shoppingList"
+              :key="item.id"
+            >
+              <div class="w-10 h-10 bg-red-100 rounded-full"></div>
+              <div class="items-center ml-3">
+                <p class="">{{ item.name }}</p>
+                <p class="text-sm text-slate-400">produktów</p>
+              </div>
+              <button class="ml-auto mr-2 block">
+                <Icon icon="mdi:chevron-right" class="w-5 h-5" />
+              </button>
+            </li>
+          </ul>
+        </div>
       </div>
       <div class="flex justify-center">
         <router-link to="/shopping">
@@ -51,41 +59,20 @@
         </router-link>
       </div>
     </div>
-    <ShoppingList v-if="displayList"></ShoppingList>
+    <shoppingList v-if="displayList"></shoppingList>
   </div>
 </template>
 <script setup>
 import { Icon } from "@iconify/vue";
-import { ref, onMounted, computed } from "vue";
-import axios from "@/api/axios";
+import { ref, onMounted } from "vue";
 import store from "../store";
-import router from "../router/";
+
 const displayList = ref(false);
 const shoppingList = ref([]);
-const productGroup = ref([
-  {
-    img: "",
-    groupName: "Pizza",
-    productsQuantity: "5",
-  },
-]);
-// onMounted(async () => {
-//   try {
-//     const userId = store.getters.getUserId; // Replace with the actual user ID
-//     console.log("userek", userId);
 
-//     const response = await axios.get(`/user/${userId}/shoppings`);
-//     shoppingList.value = response.data;
-//     console.log("tutaj", response);
-//   } catch (error) {
-//     console.error("Error:", error.message);
-//   }
-// });
 onMounted(() => {
   const userId = store.getters.getUserId;
   store.dispatch("userListFetch", userId);
-  console.log("user z vue", userId);
-  console.log("store", store);
 });
 </script>
 <style>
