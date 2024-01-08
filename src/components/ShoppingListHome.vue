@@ -24,29 +24,15 @@
         <h6 class="text-slate-400 text-xs font-bold pt-7 ml-4">
           Utworzone listy
         </h6>
-        <!-- <ul>
-          <li class="flex mx-3 mt-5 items-center" v-for="item in productGroup">
-            <div class="w-10 h-10 bg-red-100 rounded-full"></div>
-            <div class="items-center ml-3">
-              <p class="">{{ item.groupName }}</p>
-              <p class="text-sm text-slate-400">
-                {{ item.productsQuantity }} produktów
-              </p>
-            </div>
-            <button class="ml-auto mr-2 block">
-              <Icon icon="mdi:chevron-right" class="w-5 h-5" />
-            </button>
-          </li>
-        </ul> -->
         <ul>
           <li
             class="flex mx-3 mt-5 items-center"
-            v-for="shoppingList in shoppingLists"
-            :key="shoppingList.id"
+            v-for="item in shoppingList"
+            :key="item.id"
           >
             <div class="w-10 h-10 bg-red-100 rounded-full"></div>
             <div class="items-center ml-3">
-              <p class="">{{ shoppingList.name }}</p>
+              <p class="">{{ item.name }}</p>
               <p class="text-sm text-slate-400">produktów</p>
             </div>
             <button class="ml-auto mr-2 block">
@@ -59,7 +45,6 @@
         <router-link to="/shopping">
           <button
             class="text-white h-16 flex justify-center items-center mt-14 rounded-3xl bg-green-700 btn-size"
-            @click="CreateShoppingList"
           >
             Stwórz nową listę
           </button>
@@ -71,11 +56,12 @@
 </template>
 <script setup>
 import { Icon } from "@iconify/vue";
-import { ref, onMounted } from "vue";
-import { getShoppingList } from "../api/api";
+import { ref, onMounted, computed } from "vue";
+import axios from "@/api/axios";
+import store from "../store";
 import router from "../router/";
 const displayList = ref(false);
-const shoppingLists = ref([]);
+const shoppingList = ref([]);
 const productGroup = ref([
   {
     img: "",
@@ -83,24 +69,17 @@ const productGroup = ref([
     productsQuantity: "5",
   },
 ]);
-
-const fetchShoppingLists = async () => {
+onMounted(async () => {
   try {
-    const token = localStorage.getItem("userToken");
-    // Sprawdź, czy token istnieje
-    if (!token) {
-      console.error("Brak tokena. Użytkownik nie jest zalogowany.");
-      return;
-    }
-
-    const response = await getShoppingList(token);
-    shoppingLists.value = response.data;
+    const userId = store.getters.getUserId; // Replace with the actual user ID
+    console.log("userek", userId);
+    const response = await axios.get(`/user/${userId}/shoppings`);
+    shoppingList.value = response.data;
+    console.log("tutaj", response);
   } catch (error) {
-    console.error("Błąd podczas pobierania list zakupów:", error);
+    console.error("Error:", error.message);
   }
-};
-
-onMounted(fetchShoppingLists);
+});
 </script>
 <style>
 body {

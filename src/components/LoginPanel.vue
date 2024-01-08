@@ -66,6 +66,7 @@ import { ref } from "vue";
 import { Icon } from "@iconify/vue";
 import router from "../router/";
 import { login } from "../api/api";
+import store from "../store";
 
 const form = ref({
   email: "",
@@ -77,7 +78,9 @@ const loginFunction = () => {
     .then((response) => {
       const token = response.data.token;
       localStorage.setItem("userToken", token);
+      console.log("User ID:", response.data.user.id);
       console.log("To jest ten response", response); //response.token odda mi token - potrzebuje vuex zeby trzymał info o wszystkim
+      store.dispatch("loginUser", response.data.user);
       router.push("/");
     })
     .catch((error) => {
