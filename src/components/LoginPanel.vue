@@ -74,19 +74,15 @@ const form = ref({
 });
 
 const loginFunction = () => {
-  login(form.value)
-    .then((response) => {
-      const token = response.data.token;
-      localStorage.setItem("userToken", token);
-      console.log("User ID:", response.data.user.id);
-      console.log("To jest ten response", response); //response.token odda mi token - potrzebuje vuex zeby trzymał info o wszystkim
-      store.dispatch("loginUser", response.data.user);
+  store
+    .dispatch("loginUser", form.value)
+    .then(() => {
       router.push("/");
+      console.log("zalogowano");
     })
     .catch((error) => {
-      console.log(error);
+      console.error("Error during login:", error);
     });
-  console.log("zalogowano");
 };
 const showPassword = ref(false);
 

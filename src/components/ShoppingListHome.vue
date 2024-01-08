@@ -69,16 +69,23 @@ const productGroup = ref([
     productsQuantity: "5",
   },
 ]);
-onMounted(async () => {
-  try {
-    const userId = store.getters.getUserId; // Replace with the actual user ID
-    console.log("userek", userId);
-    const response = await axios.get(`/user/${userId}/shoppings`);
-    shoppingList.value = response.data;
-    console.log("tutaj", response);
-  } catch (error) {
-    console.error("Error:", error.message);
-  }
+// onMounted(async () => {
+//   try {
+//     const userId = store.getters.getUserId; // Replace with the actual user ID
+//     console.log("userek", userId);
+
+//     const response = await axios.get(`/user/${userId}/shoppings`);
+//     shoppingList.value = response.data;
+//     console.log("tutaj", response);
+//   } catch (error) {
+//     console.error("Error:", error.message);
+//   }
+// });
+onMounted(() => {
+  const userId = store.getters.getUserId;
+  store.dispatch("userListFetch", userId);
+  console.log("user z vue", userId);
+  console.log("store", store);
 });
 </script>
 <style>

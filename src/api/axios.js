@@ -9,10 +9,7 @@ const instance = axios.create({
 //   instance.defaults.headers.common['Authorization'] = AUTH_TOKEN;
 instance.interceptors.request.use(
   (config) => {
-    // Get the token from wherever you store it (e.g., localStorage, Vuex store)
     const token = localStorage.getItem("userToken");
-
-    // If the token exists, add it to the Authorization header
     if (token) {
       config.headers["Authorization"] = `Bearer ${token}`;
     }
@@ -20,7 +17,6 @@ instance.interceptors.request.use(
     return config;
   },
   (error) => {
-    // Handle request error
     return Promise.reject(error);
   }
 );
