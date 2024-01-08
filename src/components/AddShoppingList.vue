@@ -114,7 +114,7 @@
       <!-- //dodawanie listy do bazy -->
       <div class="flex justify-around mx-20">
         <button
-          @click="AddShoppingList"
+          @click="createShoppingList"
           class="my-8 bg-green-700 h-16 w-16 flex justify-center items-center rounded-3xl text-white"
         >
           <Icon icon="fluent-mdl2:accept-medium" class="w-5 h-5" />
@@ -125,34 +125,22 @@
 </template>
 <script setup>
 import { Icon } from "@iconify/vue";
-import { ref, reactive } from "vue";
-import { createNewList } from "../api/api";
-import router from "../router/";
+import { ref } from "vue";
+import { useStore } from "vuex";
+import router from "../router";
+
+const store = useStore();
+
 const hideList = ref(false);
-const displayAddProduct = ref(false);
-const diary = reactive({
-  item1: "Mleko",
-  item2: "Ser",
-  item3: "Jogurt Naturalny",
-});
-const bakery = reactive({
-  item1: "Chleb",
-  item2: "Bułki",
-  item3: "Bagietka",
-});
-const coldCuts = reactive({
-  item1: "Szynka",
-  item2: "Salami",
-  item3: "Prosciutto Cotto",
-});
-const frozenStuff = reactive({});
+
 const form = ref({
   name: "",
 });
 
-const AddShoppingList = () => {
-  // TODO utworz akcje w store js i wykonaj
-  // store.dispatch("createList", userId)
+const createShoppingList = () => {
+  store.dispatch("createNewList", form.value).then(() => {
+    router.push("/");
+  });
 };
 </script>
 <style>

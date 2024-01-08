@@ -65,7 +65,9 @@
 import { ref } from "vue";
 import { Icon } from "@iconify/vue";
 import router from "../router";
-import store from "../store";
+import { useStore } from "vuex";
+
+const store = useStore();
 
 const form = ref({
   email: "",

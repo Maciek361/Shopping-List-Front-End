@@ -1,8 +1,6 @@
-import { createStore } from "vuex";
-import { login } from "./api/api";
-import { fetchUserList } from "./api/api";
+import { login, fetchUserList, createNewList } from "./api/api";
 
-export default createStore({
+export default {
   state: {
     user: null,
     list: [],
@@ -26,7 +24,6 @@ export default createStore({
 
         commit("setUser", response.data.user); //commituje tylko mutations
       } catch (error) {
-        console.error("Login failed:", error);
         return Promise.reject(error);
       }
     },
@@ -36,7 +33,16 @@ export default createStore({
 
         commit("setList", response.data);
       } catch (error) {
-        console.error("Nie pobrano listy:", error);
+        return Promise.reject(error);
+      }
+    },
+    async createNewList({ commit }, userId) {
+      try {
+        const response = await createNewList(userId);
+
+        commit("addToList", response.data);
+      } catch (error) {
+        return Promise.reject(error);
       }
     },
   },
@@ -45,4 +51,4 @@ export default createStore({
     getShoppingLists: (state) => state.list,
     isUserAuthenticated: (state) => state.user != null,
   },
-});
+};

@@ -26,7 +26,7 @@
         </h6>
         <div>
           <div
-            v-if="!shoppingList.length"
+            v-if="!shoppingLists.length"
             class="no-lists text-xs font-bold pt-7 ml-4"
           >
             Brak utwrzonych list!
@@ -34,8 +34,9 @@
           <ul v-else>
             <li
               class="flex mx-3 mt-5 items-center"
-              v-for="item in shoppingList"
+              v-for="item in shoppingLists"
               :key="item.id"
+              @click="() => openShoppingList(item.id)"
             >
               <div class="w-10 h-10 bg-red-100 rounded-full"></div>
               <div class="items-center ml-3">
@@ -64,16 +65,24 @@
 </template>
 <script setup>
 import { Icon } from "@iconify/vue";
-import { ref, onMounted } from "vue";
-import store from "../store";
+import { ref, onMounted, computed } from "vue";
+import { useStore } from "vuex";
+
+const store = useStore();
 
 const displayList = ref(false);
-const shoppingList = ref([]);
+const shoppingLists = computed(() => store.getters.getShoppingLists);
+const userId = computed(() => store.getters.getUserId);
 
 onMounted(() => {
-  const userId = store.getters.getUserId;
   store.dispatch("userListFetch", userId);
 });
+
+const openShoppingList = (listId) => {
+  console.log(
+    `fetch /api/user/${userId.value}/shoppings/${listId} and push to list`
+  );
+};
 </script>
 <style>
 body {

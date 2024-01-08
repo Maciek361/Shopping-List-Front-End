@@ -31,6 +31,7 @@ const router = createRouter({
       path: "/shopping",
       name: "addNewList",
       component: AddShoppingListView,
+      beforeEnter: () => isUserAuthenticated(),
     },
   ],
 });
