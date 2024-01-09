@@ -12,6 +12,10 @@ export default {
     setList(state, list) {
       state.list = list;
     },
+    clearState(state) {
+      state.list = [];
+      state.user = null;
+    },
   },
   actions: {
     async loginUser({ commit }, userCredentials) {
@@ -44,6 +48,10 @@ export default {
       } catch (error) {
         return Promise.reject(error);
       }
+    },
+    logout({ commit }) {
+      localStorage.removeItem("userToken");
+      commit("clearState");
     },
   },
   getters: {
