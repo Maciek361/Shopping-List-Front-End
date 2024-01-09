@@ -1,5 +1,5 @@
 import { createApp } from "vue";
-import Vuex from "vuex";
+import { createStore } from "vuex";
 import VuexPersist from "vuex-persist";
 import App from "./App.vue";
 import router from "./router";
@@ -15,7 +15,7 @@ const vuexLocalStorage = new VuexPersist({
   reducer: (state) => state,
 });
 
-const store = new Vuex.Store({
+const store = createStore({
   ...appStore,
   plugins: [vuexLocalStorage.plugin],
 });
@@ -23,5 +23,7 @@ const store = new Vuex.Store({
 const app = createApp(App);
 
 app.use(router).use(store);
+
+router.store = store;
 
 app.mount("#app");

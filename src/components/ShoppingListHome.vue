@@ -60,22 +60,20 @@
         </router-link>
       </div>
     </div>
-    <shoppingList v-if="displayList"></shoppingList>
   </div>
 </template>
 <script setup>
 import { Icon } from "@iconify/vue";
-import { ref, onMounted, computed } from "vue";
+import { onMounted, computed } from "vue";
 import { useStore } from "vuex";
 
 const store = useStore();
 
-const displayList = ref(false);
 const shoppingLists = computed(() => store.getters.getShoppingLists);
 const userId = computed(() => store.getters.getUserId);
 
 onMounted(() => {
-  store.dispatch("userListFetch", userId);
+  store.dispatch("userListFetch", userId.value);
 });
 
 const openShoppingList = (listId) => {
