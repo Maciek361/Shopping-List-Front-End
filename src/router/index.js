@@ -3,6 +3,7 @@ import HomeView from "../views/HomeView.vue";
 import LoginView from "../views/LoginView.vue";
 import RegisterView from "../views/RegisterView.vue";
 import AddShoppingListView from "../views/AddShoppingListView.vue";
+import ShoppingListView from "../views/ShoppingListView.vue";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -28,6 +29,13 @@ const router = createRouter({
       name: "addNewList",
       component: AddShoppingListView,
       beforeEnter: () => isUserAuthenticated(),
+    },
+    {
+      path: "/shopping/:id",
+      name: "showShoppingList",
+      component: ShoppingListView,
+      beforeEnter: () => isUserAuthenticated(),
+      props: true,
     },
   ],
 });

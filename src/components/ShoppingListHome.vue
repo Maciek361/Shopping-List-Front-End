@@ -66,6 +66,7 @@
 import { Icon } from "@iconify/vue";
 import { onMounted, computed } from "vue";
 import { useStore } from "vuex";
+import router from "../router";
 
 const store = useStore();
 
@@ -77,9 +78,7 @@ onMounted(() => {
 });
 
 const openShoppingList = (listId) => {
-  console.log(
-    `fetch /api/user/${userId.value}/shoppings/${listId} and push to list`
-  );
+  router.push({ path: `/shopping/${listId}`, params: { listId } });
 };
 </script>
 <style>

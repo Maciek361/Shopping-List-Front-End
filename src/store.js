@@ -57,6 +57,8 @@ export default {
   getters: {
     getUserId: (state) => (state.user ? state.user.id : null),
     getShoppingLists: (state) => state.list,
+    getShoppingListById: (state) => (id) =>
+      state.list.find((l) => l.id === parseInt(id)),
     isUserAuthenticated: (state) => state.user != null,
   },
 };
