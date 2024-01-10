@@ -41,6 +41,7 @@
               <div class="w-10 h-10 bg-red-100 rounded-full"></div>
               <div class="items-center ml-3">
                 <p class="">{{ item.name }}</p>
+
                 <p class="text-sm text-slate-400">produktów</p>
               </div>
               <button class="ml-auto mr-2 block">
@@ -66,20 +67,19 @@
 import { Icon } from "@iconify/vue";
 import { onMounted, computed } from "vue";
 import { useStore } from "vuex";
+import router from "../router";
 
 const store = useStore();
 
 const shoppingLists = computed(() => store.getters.getShoppingLists);
 const userId = computed(() => store.getters.getUserId);
-
+console.log("lista", shoppingLists);
 onMounted(() => {
   store.dispatch("userListFetch", userId.value);
 });
 
 const openShoppingList = (listId) => {
-  console.log(
-    `fetch /api/user/${userId.value}/shoppings/${listId} and push to list`
-  );
+  router.push(`/shopping/${listId}`);
 };
 </script>
 <style>
