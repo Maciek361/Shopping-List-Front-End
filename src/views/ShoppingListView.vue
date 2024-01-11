@@ -20,7 +20,7 @@ export default {
           </button>
         </router-link>
         <p class="text-xs text-slate-400">
-          Data utworzenia: {{ shoppingList.created_at }}
+          Data utworzenia: {{ formatCreatedAt(shoppingList.created_at) }}
         </p>
         <Icon icon="pepicons-pencil:dots-y" class="w-5 h-5" />
       </div>
@@ -53,7 +53,7 @@ export default {
         </li>
       </ul>
       <hr class="mx-5 mt-2" />
-      <div class="flex justify-around mx-20">Coś tu jest</div>
+      <select id="select-repo" placeholder="Wybierz produkt" multiple></select>
     </div>
   </div>
   <div class="mt-10">
@@ -62,14 +62,61 @@ export default {
 </template>
 <script setup>
 import { Icon } from "@iconify/vue";
-import { ref, computed } from "vue";
+import { ref, computed, onMounted } from "vue";
 import { useStore } from "vuex";
+import { format } from "date-fns";
+import TomSelect from "tom-select";
 import router from "../router";
 const store = useStore();
 const props = defineProps(["id"]);
 const shoppingList = computed(() =>
   store.getters.getShoppingListById(props.id)
 );
+const formatCreatedAt = (createdAt) => {
+  return format(new Date(createdAt), "yyyy-MM-dd HH:mm:ss");
+};
+// document.addEventListener("DOMContentLoaded", function () {
+onMounted(() => {
+  new TomSelect("#select-repo", {
+    valueField: "url",
+    labelField: "name",
+    searchField: "name",
+    // fetch remote data
+    load: function (query, callback) {
+      var url =
+        "http://127.0.0.1:8000/api/product?name=" + encodeURIComponent(query);
+      fetch(url)
+        .then((response) => response.json())
+        .then((json) => {
+          // store.dispatch("addProductToList", productId.value);
+          callback(json.items);
+        })
+        .catch((json) => {
+          callback(json.items);
+        });
+    },
+    // custom rendering functions for options and items
+    render: {
+      option: function (item, escape) {
+        return `<div class="py-2 d-flex">
+    					<div class="mb-1">
+    						<span class="h4">
+    							${escape(item.name)}
+    						</span>	
+    			</div>`;
+      },
+      item: function (item, escape) {
+        return `<div class="py-2 d-flex">
+    					<div class="mb-1">
+    						<span class="h4">
+    							${escape(item.name)}
+    						</span>
+    					</div>
+    			</div>`;
+      },
+    },
+  });
+});
 </script>
 <style>
 body {

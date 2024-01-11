@@ -11,20 +11,14 @@ const login = (payload) => {
 };
 
 const fetchUserList = (userId) => {
-  return Axios.get(`http://127.0.0.1:8000/api/user/${userId}/shoppings`);
+  return Axios.get(`/user/${userId}/shoppings`);
 };
 
 const createNewList = (formData) => {
-  return Axios.post("http://127.0.0.1:8000/api/shopping", formData);
+  return Axios.post("/shopping", formData);
 };
-// const userId = "17";
-// Axios.get(`/api/user/${userId}/shoppings`)
-//   .then((response) => {
-//     console.log("api.js Response:", response.data);
-//   })
-//   .catch((error) => {
-//     // Handle errors
-//     console.error("Error:", error.message);
-//   });
+const attachProductToList = (listId, productId) => {
+  return Axios.post(`/shopping/${listId}/products/${productId}`);
+};
 
-export { register, login, createNewList, fetchUserList }; //po przecinku kolejne
+export { register, login, createNewList, fetchUserList, attachProductToList }; //po przecinku kolejne

@@ -49,6 +49,15 @@ export default {
         return Promise.reject(error);
       }
     },
+    // async addProductToList({ commit }, listId, productId) {
+    //   try {
+    //     const response = await attachProductToList(listId, productId);
+
+    //     commit("addToList", response.data);
+    //   } catch (error) {
+    //     return Promise.reject(error);
+    //   }
+    // },
     logout({ commit }) {
       localStorage.removeItem("userToken");
       commit("clearState");
