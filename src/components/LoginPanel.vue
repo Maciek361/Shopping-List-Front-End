@@ -53,8 +53,9 @@
       </form>
 
       <div class="mt-4 text-gray-600 text-sm text-center">
-        <router-link to="/login" class="text-green-600"
-          >Nie pamiętasz hasła?</router-link
+        Nie masz konta?
+        <router-link to="/register" class="text-green-600"
+          >Zarejestruj się</router-link
         >
       </div>
     </div>

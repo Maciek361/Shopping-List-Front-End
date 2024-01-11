@@ -1,17 +1,14 @@
 <template>
   <div class="flex">
-    <div
-      class="mt-10 ml-10 bg-white card rounded-2xl overflow-auto"
-      v-if="!hideList"
-    >
+    <div class="mt-10 ml-10 bg-white card rounded-2xl overflow-auto">
       <div class="mt-8 mx-5 sticky top-0 flex justify-between items-center">
-        <button>
-          <Icon icon="mdi:arrow-left" class="w-5 h-5" />
-        </button>
-        <p class="text-xs text-slate-400">Data utworzenia: 25.06.2020</p>
-        <button @click="hideList = !hideList">
-          <Icon icon="ph:x" class="w-5 h-5" />
-        </button>
+        <router-link to="/">
+          <button>
+            <Icon icon="mdi:arrow-left" class="w-5 h-5" />
+          </button>
+        </router-link>
+
+        <Icon icon="pepicons-pencil:dots-y" class="w-5 h-5" />
       </div>
       <form @submit.prevent="createList">
         <div class="flex items-center">
@@ -24,13 +21,8 @@
             type="text"
             class="text-xl mt-8 ml-5 border-b border-green-700 outline-none"
           />
-          <button>
-            <Icon icon="material-symbols:edit" class="mt-8 ml-2" />
-          </button>
         </div>
-        <!-- <input
-          v-model="formProduct.product_id"
-          id="productName"
+        <input
           name="productName"
           placeholder="Dodaj produkt"
           maxlength="30"
@@ -42,7 +34,7 @@
           class="my-8 bg-green-700 h-10 w-10 flex justify-center items-center rounded-3xl text-white"
         >
           <Icon icon="fluent-mdl2:accept-medium" class="w-5 h-5" />
-        </button> -->
+        </button>
       </form>
 
       <!-- // Poniżej div do wyswietlania produktów -->

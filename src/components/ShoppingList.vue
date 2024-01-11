@@ -1,32 +1,17 @@
-<!-- <template>
-  <div><ShoppingList /></div>
-</template>
-<script>
-import ShoppingList from "../components/ShoppingList.vue";
-
-export default {
-  components: { ShoppingList },
-};
-</script>
-<style scoped></style> -->
-
 <template>
   <div class="flex">
     <div class="mt-10 ml-10 bg-white card rounded-2xl overflow-auto">
       <div class="mt-8 mx-5 sticky top-0 flex justify-between items-center">
-        <router-link to="/">
-          <button>
-            <Icon icon="mdi:arrow-left" class="w-5 h-5" />
-          </button>
-        </router-link>
-        <p class="text-xs text-slate-400">
-          Data utworzenia: {{ shoppingList.created_at }}
-        </p>
+        <button>
+          <Icon icon="mdi:arrow-left" class="w-5 h-5" />
+        </button>
+
+        <p class="text-xs text-slate-400">Data utworzenia: 25.06.2020</p>
         <Icon icon="pepicons-pencil:dots-y" class="w-5 h-5" />
       </div>
       <div class="flex items-center">
-        <p class="text-xl mt-8 ml-5">
-          {{ shoppingList.name }}
+        <p class="text-xl mt-8 ml-5 border-b border-green-700 outline-none">
+          Nazwa Listyasdasd
         </p>
       </div>
       <!-- // Poniżej div do wyswietlania produktów -->
@@ -45,19 +30,16 @@ export default {
             <span class="ml-3">{{ product.name }}</span>
           </label>
 
-          <!-- <input
+          <input
             placeholder="0"
             class="text-xS ml-auto mr-2 block w-7 h-7 border rounded-md text-center"
             type="text"
-          /> -->
+          />
         </li>
       </ul>
       <hr class="mx-5 mt-2" />
       <div class="flex justify-around mx-20">Coś tu jest</div>
     </div>
-  </div>
-  <div class="mt-10">
-    {{ shoppingList }}
   </div>
 </template>
 <script setup>

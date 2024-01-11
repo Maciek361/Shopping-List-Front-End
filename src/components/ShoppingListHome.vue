@@ -1,8 +1,13 @@
 <template>
   <div class="flex">
     <div class="mt-10 ml-10 bg-white card rounded-2xl overflow-auto">
-      <div class="flex justify-center mt-12">
-        <h1 class="text-xl">Lista zakupów</h1>
+      <div class="flex ml-3 mt-12 items-center">
+        <div
+          class="w-10 h-10 bg-green-600 rounded-full flex items-center justify-center"
+        >
+          <span class="text-sm"> ID:{{ userId }}</span>
+        </div>
+        <h1 class="text-xl ml-5">Lista zakupów</h1>
       </div>
       <h6 class="text-slate-400 text-xs font-bold pt-7 ml-4">
         Najczęściej używane
@@ -29,7 +34,7 @@
             v-if="!shoppingLists.length"
             class="no-lists text-xs font-bold pt-7 ml-4"
           >
-            Brak utwrzonych list!
+            Brak utworzonych list!
           </div>
           <ul v-else>
             <li
