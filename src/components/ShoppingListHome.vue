@@ -97,7 +97,7 @@ const createShoppingList = (listId) => {
   });
 };
 const openShoppingList = (listId) => {
-  router.push({ path: `/shopping/${listId}`, params: { listId } });
+  router.push({ name: "showShoppingList", params: { id: listId } });
 };
 const showModal = ref(false);
 const openModal = () => {

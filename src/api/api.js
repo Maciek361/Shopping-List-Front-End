@@ -25,6 +25,10 @@ const getProductByName = (name) => {
   return Axios.get(`/product?name=${encodeURIComponent(name)}`);
 };
 
+const getListById = (id) => {
+  return Axios.get(`/shopping/${id}`);
+};
+
 export {
   register,
   login,
@@ -32,4 +36,5 @@ export {
   fetchUserList,
   attachProductToList,
   getProductByName,
+  getListById,
 }; //po przecinku kolejne
