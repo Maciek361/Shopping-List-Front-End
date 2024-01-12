@@ -1,15 +1,3 @@
-<!-- <template>
-  <div><ShoppingList /></div>
-</template>
-<script>
-import ShoppingList from "../components/ShoppingList.vue";
-
-export default {
-  components: { ShoppingList },
-};
-</script>
-<style scoped></style> -->
-
 <template>
   <div class="flex">
     <div class="mt-10 ml-10 bg-white card rounded-2xl overflow-auto">
@@ -29,22 +17,13 @@ export default {
           {{ shoppingList.name }}
         </p>
       </div>
-      <select
-        id="select-repo"
-        class="w-full"
-        placeholder="Wybierz produkt"
-      ></select>
-      <button
+      <MTomSelect @on-change="(v) => onChange(v)" />
+      <!-- <button
         @click="addToList(productId)"
         class="bg-green-700 rounded-3xl text-white"
       >
         <Icon icon="fluent-mdl2:accept-medium" class="w-5 h-5" />
-      </button>
-
-      <div>
-        <h6 class="text-xs text-slate-400 font-bold mt-8 ml-5">Nabiał</h6>
-      </div>
-      <hr class="mx-5 mt-2" />
+      </button> -->
       <ul>
         <li
           class="flex mx-5 my-3 items-center"
@@ -78,12 +57,12 @@ export default {
 </template>
 <script setup>
 import { Icon } from "@iconify/vue";
-import { ref, computed, onMounted } from "vue";
+import { ref, computed } from "vue";
 import { useStore } from "vuex";
 import { format } from "date-fns";
-import TomSelect from "tom-select";
 import { attachProductToList } from "../api/api";
 import router from "../router";
+import MTomSelect from "../components/TomSelect/MTomSelect.vue";
 
 const store = useStore();
 const props = defineProps(["id"]);
@@ -93,9 +72,11 @@ const shoppingList = computed(() =>
   store.getters.getShoppingListById(props.id)
 );
 const productId = ref(null);
-const onChange = (value) => {
+
+const onChange = ({ value }) => {
   productId.value = value;
 };
+
 const addToList = async () => {
   const response = await attachProductToList(props.id, productId.value);
   console.log("productId", productId.value);
@@ -117,28 +98,6 @@ const getQuantity = (productId) => {
 const formatCreatedAt = (createdAt) => {
   return format(new Date(createdAt), "yyyy-MM-dd HH:mm:ss");
 };
-
-onMounted(() => {
-  new TomSelect("#select-repo", {
-    onChange: (value) => onChange(value),
-    valueField: "id",
-    labelField: "name",
-    searchField: "name",
-    load: function (query, callback) {
-      var url =
-        "http://127.0.0.1:8000/api/product?name=" + encodeURIComponent(query);
-      fetch(url)
-        .then((response) => response.json())
-        .then((json) => {
-          callback(json);
-          console.log("json", json);
-        })
-        .catch((json) => {
-          callback(json);
-        });
-    },
-  });
-});
 </script>
 <style>
 body {

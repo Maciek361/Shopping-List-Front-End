@@ -26,10 +26,9 @@ instance.interceptors.response.use(
   (response) => response,
   (error) => {
     const URL = error.config.url;
-    const status = error.response.status;
     const store = router.store;
 
-    if (status === 401 && URL !== "/login") {
+    if (URL !== "/login") {
       router.push("/login");
       store.dispatch("logout");
 

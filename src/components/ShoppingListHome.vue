@@ -1,13 +1,6 @@
 <template>
   <div class="flex">
     <div class="mt-10 ml-10 card rounded-2xl overflow-auto bg-green-600">
-      <!-- <div class="flex justify-end m-3">
-        <div
-          class="w-10 h-10 bg-blue-600 rounded-full flex items-center justify-center"
-        >
-          <span class="text-sm"> ID:{{ userId }}</span>
-        </div>
-      </div> -->
       <div class="flex my-8 items-center justify-center">
         <h1 class="text-xl text-white">Listy zakupowe</h1>
       </div>
@@ -66,13 +59,6 @@
       <div
         class="flex justify-around sticky bottom-0 bg-green-600 my-4 rounded-t-xl py-4"
       >
-        <!-- <router-link to="/shopping">
-          <button
-            class="text-white h-16 flex justify-center items-center mt-14 rounded-3xl bg-green-700 btn-size"
-          >
-            Stwórz nową listę
-          </button>
-        </router-link> -->
         <button>
           <Icon class="text-2xl" color="white" icon="codicon:home"></Icon>
         </button>

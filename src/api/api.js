@@ -21,4 +21,15 @@ const attachProductToList = (listId, productId) => {
   return Axios.post(`/shopping/${listId}/products/${productId}`);
 };
 
-export { register, login, createNewList, fetchUserList, attachProductToList }; //po przecinku kolejne
+const getProductByName = (name) => {
+  return Axios.get(`/product?name=${encodeURIComponent(name)}`);
+};
+
+export {
+  register,
+  login,
+  createNewList,
+  fetchUserList,
+  attachProductToList,
+  getProductByName,
+}; //po przecinku kolejne
