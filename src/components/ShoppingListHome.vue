@@ -74,7 +74,11 @@
           </button>
         </router-link> -->
         <button>
-          <Icon class="text-2xl" color="white" icon="codicon:home"></Icon>
+          <Icon
+            class="text-2xl"
+            color="white"
+            icon="material-symbols:search"
+          ></Icon>
         </button>
         <button @click="openModal">
           <Icon color="white" class="text-2xl" icon="lucide:plus"></Icon>

@@ -17,8 +17,22 @@ const fetchUserList = (userId) => {
 const createNewList = (formData) => {
   return Axios.post("/shopping", formData);
 };
+const detachUserFromList = (listId, userId) => {
+  return Axios.delete(`/shopping/${listId}/users/${userId}`);
+};
 const attachProductToList = (listId, productId) => {
   return Axios.post(`/shopping/${listId}/products/${productId}`);
 };
+const detachProductFromList = (listId, productId) => {
+  return Axios.delete(`/shopping/${listId}/products/${productId}`);
+};
 
-export { register, login, createNewList, fetchUserList, attachProductToList }; //po przecinku kolejne
+export {
+  register,
+  login,
+  createNewList,
+  fetchUserList,
+  attachProductToList,
+  detachProductFromList,
+  detachUserFromList,
+}; //po przecinku kolejne

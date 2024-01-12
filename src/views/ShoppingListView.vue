@@ -19,10 +19,10 @@ export default {
             <Icon icon="mdi:arrow-left" class="w-5 h-5" />
           </button>
         </router-link>
-        <p class="text-xs text-slate-400">
+        <!-- <p class="text-xs text-slate-400">
           Data utworzenia: {{ formatCreatedAt(shoppingList.created_at) }}
-        </p>
-        <Icon icon="pepicons-pencil:dots-y" class="w-5 h-5" />
+        </p> -->
+        <!-- <Icon icon="pepicons-pencil:dots-y" class="w-5 h-5" /> -->
       </div>
       <div class="flex items-center">
         <p class="text-xl mt-8 ml-5">
@@ -67,9 +67,32 @@ export default {
             maxlength="2"
             :value="getQuantity(product.id)"
           />
+          <button @click="removeProductFromList(product.id)">
+            <Icon icon="bi:trash-fill" color="grey"></Icon>
+          </button>
         </li>
       </ul>
       <hr class="mx-5 mt-2" />
+      <div
+        class="flex justify-around items-center sticky bottom-0 bg-green-600 my-4 rounded-t-xl py-4"
+      >
+        <button>
+          <Icon
+            color="white"
+            class="text-2xl"
+            icon="material-symbols:share-outline"
+          ></Icon>
+        </button>
+        <button>
+          <router-link to="/">
+            <Icon class="text-2xl" color="white" icon="codicon:home"></Icon>
+          </router-link>
+        </button>
+
+        <button @click="removeUserFromList">
+          <Icon icon="bi:trash" class="text-2xl" color="white"></Icon>
+        </button>
+      </div>
     </div>
   </div>
   <div class="mt-10">
@@ -83,11 +106,14 @@ import { useStore } from "vuex";
 import { format } from "date-fns";
 import TomSelect from "tom-select";
 import { attachProductToList } from "../api/api";
+import { detachProductFromList } from "../api/api";
+import { detachUserFromList } from "../api/api";
 import router from "../router";
 
 const store = useStore();
 const props = defineProps(["id"]);
 const userId = computed(() => store.getters.getUserId);
+console.log("userID", userId.value);
 
 const shoppingList = computed(() =>
   store.getters.getShoppingListById(props.id)
@@ -98,10 +124,17 @@ const onChange = (value) => {
 };
 const addToList = async () => {
   const response = await attachProductToList(props.id, productId.value);
-  console.log("productId", productId.value);
   store.dispatch("userListFetch", userId.value);
 };
-
+const removeProductFromList = async (id) => {
+  const response = await detachProductFromList(props.id, id);
+  store.dispatch("userListFetch", userId.value);
+};
+const removeUserFromList = async () => {
+  const response = await detachUserFromList(props.id, userId.value);
+  store.dispatch("userListFetch", userId.value);
+  router.push("/");
+};
 const isChecked = (productId) => {
   const isCheckedObj = shoppingList.value.quantities.find(
     (q) => q.product_id === productId
