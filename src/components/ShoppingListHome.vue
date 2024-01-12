@@ -33,7 +33,7 @@
               <div class="w-10 h-10 bg-blue-300 rounded-full"></div>
               <div class="items-center ml-3">
                 <p class="">{{ item.name }}</p>
-                <p class="text-sm">produktów</p>
+                <p class="text-xs text-slate-500">2024-01-05 15:43:46</p>
               </div>
 
               <button class="ml-auto mr-2 block">
@@ -104,9 +104,10 @@ const form = ref({
   name: "",
 });
 
-const createShoppingList = () => {
+const createShoppingList = (listId) => {
   store.dispatch("createNewList", form.value).then(() => {
-    router.push("/");
+    // router.push("/");
+    router.push({ path: `/shopping/${listId}`, params: { listId } });
   });
 };
 const openShoppingList = (listId) => {
