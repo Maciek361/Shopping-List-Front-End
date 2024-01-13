@@ -26,8 +26,33 @@
           <Icon icon="fluent-mdl2:accept-medium" class="w-5 h-5" />
         </button>
       </div>
-      <div>LOOP THRU CATEGORIES (still named as shoppingList) below</div>
     </div>
+    <ul v-for="category in shoppingList.categories" :key="category.id">
+      <h6 class="text-xs text-slate-400 font-bold mt-8 ml-5">
+        {{ category.category_name }}
+      </h6>
+
+      <li
+        class="flex mx-5 my-3 items-center"
+        v-for="product in category.products"
+        :key="product.id"
+      >
+        <label class="flex items-center">
+          <input type="checkbox" class="w-5 h-5" :value="product.checked" />
+          <span class="ml-3">{{ product.name }}</span>
+        </label>
+        <input
+          placeholder="x"
+          class="text-sm ml-auto mr-2 block w-6 h-6 border rounded-md text-center"
+          type="text"
+          maxlength="2"
+          :value="product.quantity"
+        />
+        <button>
+          <Icon icon="bi:trash-fill" color="grey"></Icon>
+        </button>
+      </li>
+    </ul>
     <div class="shopping-list-view-bottom"></div>
   </div>
 </template>
