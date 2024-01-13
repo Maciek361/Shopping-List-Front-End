@@ -22,21 +22,21 @@ instance.interceptors.request.use(
   }
 );
 
-instance.interceptors.response.use(
-  (response) => response,
-  (error) => {
-    const URL = error.config.url;
-    const store = router.store;
+// instance.interceptors.response.use(
+//   (response) => response,
+//   (error) => {
+//     const URL = error.config.url;
+//     const store = router.store;
 
-    if (URL !== "/login") {
-      router.push("/login");
-      store.dispatch("logout");
+//     if (URL !== "/login") {
+//       router.push("/login");
+//       store.dispatch("logout");
 
-      return Promise.reject(error);
-    }
+//       return Promise.reject(error);
+//     }
 
-    return Promise.reject(error);
-  }
-);
+//     return Promise.reject(error);
+//   }
+// );
 
 export default instance;

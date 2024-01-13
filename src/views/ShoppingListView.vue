@@ -48,12 +48,17 @@
           maxlength="2"
           :value="product.quantity"
         />
-        <button>
+        <button @click="removeProductFromList(product.id)">
           <Icon icon="bi:trash-fill" color="grey"></Icon>
         </button>
       </li>
     </ul>
-    <div class="shopping-list-view-bottom"></div>
+
+    <div class="shopping-list-view-bottom">
+      <button @click="removeUserFromList">
+        <Icon icon="bi:trash" class="text-2xl"></Icon>
+      </button>
+    </div>
   </div>
 </template>
 <script setup>
@@ -62,10 +67,13 @@ import { ref, computed } from "vue";
 import { useStore } from "vuex";
 import { format } from "date-fns";
 import { attachProductToList } from "../api/api";
+import { detachProductFromList } from "../api/api";
+import { detachUserFromList } from "../api/api";
 import MTomSelect from "../components/TomSelect/MTomSelect.vue";
 
 const store = useStore();
 const props = defineProps(["id"]);
+const userId = computed(() => store.getters.getUserId);
 
 const shoppingList = computed(() =>
   store.getters.getShoppingListById(props.id)
@@ -83,7 +91,15 @@ const addToList = async () => {
   // TODO show toast/modal (Produkt zostal dodany etc) (use response)
   store.dispatch("showListById", props.id);
 };
-
+const removeProductFromList = async (id) => {
+  const response = await detachProductFromList(props.id, id);
+  store.dispatch("showListById", props.id);
+};
+const removeUserFromList = async () => {
+  const response = await detachUserFromList(props.id, userId.value);
+  store.dispatch("showListById", props.id);
+  router.push("/");
+};
 const formatCreatedAt = (createdAt) => {
   return format(new Date(createdAt), "yyyy-MM-dd HH:mm:ss");
 };

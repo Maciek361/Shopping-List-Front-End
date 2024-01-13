@@ -20,7 +20,9 @@ const createNewList = (formData) => {
 const attachProductToList = (listId, productId) => {
   return Axios.post(`/shopping/${listId}/products/${productId}`);
 };
-
+const detachProductFromList = (listId, productId) => {
+  return Axios.delete(`/shopping/${listId}/products/${productId}`);
+};
 const getProductByName = (name) => {
   return Axios.get(`/product?name=${encodeURIComponent(name)}`);
 };
@@ -28,13 +30,17 @@ const getProductByName = (name) => {
 const getListById = (id) => {
   return Axios.get(`/shopping/${id}`);
 };
-
+const detachUserFromList = (listId, userId) => {
+  return Axios.delete(`/shopping/${listId}/users/${userId}`);
+};
 export {
   register,
   login,
   createNewList,
   fetchUserList,
   attachProductToList,
+  detachProductFromList,
   getProductByName,
   getListById,
+  detachUserFromList,
 }; //po przecinku kolejne
