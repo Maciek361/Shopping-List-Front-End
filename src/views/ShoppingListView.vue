@@ -1,63 +1,78 @@
 <template>
   <div class="shopping-list-view">
-    <div class="shopping-list-view-content-header flex flex-col bg-white p-2">
-      <div class="header-top flex justify-between items-center mb-2">
-        <router-link class="flex items-center" to="/">
-          <button>
-            <Icon icon="mdi:arrow-left" class="w-5 h-5" />
-          </button>
-        </router-link>
-        <p class="text-lg font-bold">{{ shoppingList.name }}</p>
+    <div class="shopping-list-view-content-header flex flex-col bg-green-600">
+      <router-link class="pt-2 pl-2" to="/">
         <button>
-          <Icon icon="pepicons-pencil:dots-y" class="w-5 h-5" />
+          <Icon icon="mdi:arrow-left" color="white" class="w-5 h-5" />
         </button>
+      </router-link>
+      <div class="header-top flex justify-around items-center mb-3">
+        <p class="text-xl font-bold text-white">{{ shoppingList.name }}</p>
       </div>
-      <p class="text-xs text-slate-400 text-center">
+      <p class="text-xs text-slate-200 text-center mb-1">
         Data utworzenia: {{ formatCreatedAt(shoppingList.created_at) }}
       </p>
     </div>
-    <div class="shopping-list-view-content p-2">
-      <div class="add-to-list-wrapper flex gap-4">
+    <div class="shopping-list-view-content bg-white p-2 rounded-t-xl">
+      <div class="add-to-list-wrapper flex gap-2">
         <MTomSelect class="flex-1" @on-change="(v) => onChange(v)" />
         <button
           @click="addToList(productId)"
-          class="bg-green-700 text-white p-2"
+          class="bg-green-600 rounded-lg text-white p-2"
         >
           <Icon icon="fluent-mdl2:accept-medium" class="w-5 h-5" />
         </button>
       </div>
+      <div class="bg-white rounded-b-xl">
+        <ul v-for="category in shoppingList.categories" :key="category.id">
+          <h6 class="text-sm text-slate-500 font-bold mt-8 ml-5">
+            {{ category.category_name }}
+          </h6>
+
+          <li
+            class="flex mx-5 my-2 items-center"
+            v-for="product in category.products"
+            :key="product.id"
+          >
+            <label class="flex items-center">
+              <input type="checkbox" class="w-5 h-5" :value="product.checked" />
+              <span class="ml-3">{{ product.name }}</span>
+            </label>
+            <input
+              placeholder="x"
+              class="text-sm ml-auto mr-2 block w-6 h-6 border rounded-md text-center"
+              type="text"
+              maxlength="2"
+              :value="product.quantity"
+              @change="(value) => updateQuantity(product, value)"
+            />
+            <!-- @change="updateQuantity(product.quantity, product.id)" -->
+            <button @click="removeProductFromList(product.id)">
+              <Icon icon="bi:trash-fill" color="grey"></Icon>
+            </button>
+          </li>
+          <hr class="mx-2" />
+        </ul>
+      </div>
     </div>
-    <ul v-for="category in shoppingList.categories" :key="category.id">
-      <h6 class="text-xs text-slate-400 font-bold mt-8 ml-5">
-        {{ category.category_name }}
-      </h6>
-
-      <li
-        class="flex mx-5 my-3 items-center"
-        v-for="product in category.products"
-        :key="product.id"
-      >
-        <label class="flex items-center">
-          <input type="checkbox" class="w-5 h-5" :value="product.checked" />
-          <span class="ml-3">{{ product.name }}</span>
-        </label>
-        <input
-          placeholder="x"
-          class="text-sm ml-auto mr-2 block w-6 h-6 border rounded-md text-center"
-          type="text"
-          maxlength="2"
-          :value="product.quantity"
-        />
-        <button @click="removeProductFromList(product.id)">
-          <Icon icon="bi:trash-fill" color="grey"></Icon>
+    <div class="shopping-list-view-bottom rounded-xl">
+      <div class="flex justify-around my-4 py-4">
+        <button>
+          <Icon
+            class="text-2xl"
+            color="white"
+            icon="material-symbols:share-outline"
+          ></Icon>
         </button>
-      </li>
-    </ul>
-
-    <div class="shopping-list-view-bottom">
-      <button @click="removeUserFromList">
-        <Icon icon="bi:trash" class="text-2xl"></Icon>
-      </button>
+        <button>
+          <router-link to="/">
+            <Icon color="white" class="text-2xl" icon="tabler:home"></Icon>
+          </router-link>
+        </button>
+        <button @click="removeUserFromList">
+          <Icon icon="bi:trash" color="white" class="text-2xl"></Icon>
+        </button>
+      </div>
     </div>
   </div>
 </template>
@@ -69,7 +84,9 @@ import { format } from "date-fns";
 import { attachProductToList } from "../api/api";
 import { detachProductFromList } from "../api/api";
 import { detachUserFromList } from "../api/api";
+import { updateProductQuantity } from "../api/api";
 import MTomSelect from "../components/TomSelect/MTomSelect.vue";
+import router from "../router";
 
 const store = useStore();
 const props = defineProps(["id"]);
@@ -91,6 +108,15 @@ const addToList = async () => {
   // TODO show toast/modal (Produkt zostal dodany etc) (use response)
   store.dispatch("showListById", props.id);
 };
+const updateQuantity = async (product) => {
+  const response = await updateProductQuantity(
+    props.id,
+    product.id,
+    product.quantity
+  );
+  store.dispatch("showListById", props.id);
+};
+
 const removeProductFromList = async (id) => {
   const response = await detachProductFromList(props.id, id);
   store.dispatch("showListById", props.id);
@@ -106,7 +132,7 @@ const formatCreatedAt = (createdAt) => {
 </script>
 <style>
 body {
-  background-color: antiquewhite;
+  background-color: rgb(22 163 74);
 }
 .card {
   width: 380px;

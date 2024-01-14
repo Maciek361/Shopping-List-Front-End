@@ -5,6 +5,8 @@
 </template>
 <script setup>
 import { onMounted } from "vue";
+import { Icon } from "@iconify/vue";
+
 import TomSelect from "tom-select";
 import { getProductByName } from "../../api/api";
 import "tom-select/dist/css/tom-select.default.css";

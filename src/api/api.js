@@ -33,6 +33,12 @@ const getListById = (id) => {
 const detachUserFromList = (listId, userId) => {
   return Axios.delete(`/shopping/${listId}/users/${userId}`);
 };
+const updateProductQuantity = (listId, productId) => {
+  return Axios.post(
+    `/shopping/${listId}/products/${productId}/update-quantity`
+  );
+};
+
 export {
   register,
   login,
@@ -43,4 +49,5 @@ export {
   getProductByName,
   getListById,
   detachUserFromList,
+  updateProductQuantity,
 }; //po przecinku kolejne
