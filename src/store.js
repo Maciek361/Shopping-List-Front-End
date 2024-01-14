@@ -89,6 +89,10 @@ export default {
         return Promise.reject(error);
       }
     },
+    clearStore({ commit }) {
+      localStorage.removeItem("userToken");
+      commit("clearState");
+    },
   },
   getters: {
     getUserId: (state) => (state.user ? state.user.id : null),
