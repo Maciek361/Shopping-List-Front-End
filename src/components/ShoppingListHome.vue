@@ -70,7 +70,7 @@
         <button @click="openModal">
           <Icon color="white" class="text-2xl" icon="lucide:plus"></Icon>
         </button>
-        <button>
+        <button @click="router.push('user')">
           <Icon color="white" class="text-2xl" icon="clarity:user-line"></Icon>
         </button>
       </div>

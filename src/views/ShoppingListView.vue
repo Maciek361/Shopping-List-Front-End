@@ -17,7 +17,7 @@
       <div class="add-to-list-wrapper flex gap-2">
         <MTomSelect class="flex-1" @on-change="(v) => onChange(v)" />
         <button
-          @click="addToList(productId)"
+          @click="addToList()"
           class="bg-green-600 rounded-lg text-white p-2"
         >
           <Icon icon="fluent-mdl2:accept-medium" class="w-5 h-5" />
@@ -35,7 +35,14 @@
             :key="product.id"
           >
             <label class="flex items-center">
-              <input type="checkbox" class="w-5 h-5" :value="product.checked" />
+              <input
+                type="checkbox"
+                class="w-5 h-5"
+                :checked="product.checked"
+                @change="
+                  (e) => updateCheckedForProduct(product, e.target.checked)
+                "
+              />
               <span class="ml-3">{{ product.name }}</span>
             </label>
             <input
@@ -81,10 +88,13 @@ import { Icon } from "@iconify/vue";
 import { ref, computed } from "vue";
 import { useStore } from "vuex";
 import { format } from "date-fns";
-import { attachProductToList } from "../api/api";
-import { detachProductFromList } from "../api/api";
-import { detachUserFromList } from "../api/api";
-import { updateProductQuantity } from "../api/api";
+import {
+  attachProductToList,
+  detachProductFromList,
+  detachUserFromList,
+  updateProductQuantity,
+  updateChecked,
+} from "../api/api";
 import MTomSelect from "../components/TomSelect/MTomSelect.vue";
 import router from "../router";
 
@@ -97,8 +107,6 @@ const shoppingList = computed(() =>
 );
 const productId = ref(null);
 
-console.log(shoppingList.value);
-
 const onChange = ({ value }) => {
   productId.value = value;
 };
@@ -108,12 +116,11 @@ const addToList = async () => {
   // TODO show toast/modal (Produkt zostal dodany etc) (use response)
   store.dispatch("showListById", props.id);
 };
-const updateQuantity = async (product) => {
-  const response = await updateProductQuantity(
-    props.id,
-    product.id,
-    product.quantity
-  );
+
+const updateQuantity = async ({ id }, event) => {
+  const quantity = event.target.value;
+
+  const response = await updateProductQuantity(props.id, id, quantity);
   store.dispatch("showListById", props.id);
 };
 
@@ -121,11 +128,23 @@ const removeProductFromList = async (id) => {
   const response = await detachProductFromList(props.id, id);
   store.dispatch("showListById", props.id);
 };
+
 const removeUserFromList = async () => {
   const response = await detachUserFromList(props.id, userId.value);
+
   store.dispatch("showListById", props.id);
+
   router.push("/");
 };
+
+const updateCheckedForProduct = async ({ id }, checked) => {
+  const response = await updateChecked(props.id, id, checked);
+
+  store.dispatch("showListById", props.id);
+
+  console.log(shoppingList.value);
+};
+
 const formatCreatedAt = (createdAt) => {
   return format(new Date(createdAt), "yyyy-MM-dd HH:mm:ss");
 };

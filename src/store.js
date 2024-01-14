@@ -1,4 +1,10 @@
-import { login, fetchUserList, createNewList, getListById } from "./api/api";
+import {
+  login,
+  logout,
+  fetchUserList,
+  createNewList,
+  getListById,
+} from "./api/api";
 
 export default {
   state: {
@@ -22,15 +28,12 @@ export default {
 
       if (flist) {
         const idx = newList.indexOf(flist);
-
-        if (!idx) {
-          newList.push(list);
-        } else {
-          newList.splice(idx, 1, list);
-        }
-
-        state.list = newList;
+        newList.splice(idx, 1, list);
+      } else {
+        newList.push(list);
       }
+
+      state.list = newList;
     },
   },
   actions: {
@@ -74,9 +77,17 @@ export default {
         return Promise.reject(error);
       }
     },
-    logout({ commit }) {
-      localStorage.removeItem("userToken");
-      commit("clearState");
+    async logout({ commit }) {
+      try {
+        await logout();
+
+        localStorage.removeItem("userToken");
+        commit("clearState");
+
+        return Promise.resolve("logged-out");
+      } catch (error) {
+        return Promise.reject(error);
+      }
     },
   },
   getters: {

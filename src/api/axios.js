@@ -1,5 +1,4 @@
 import axios from "axios";
-import router from "../router";
 
 // Set config defaults when creating the instance
 const instance = axios.create({
@@ -22,21 +21,12 @@ instance.interceptors.request.use(
   }
 );
 
-// instance.interceptors.response.use(
-//   (response) => response,
-//   (error) => {
-//     const URL = error.config.url;
-//     const store = router.store;
-
-//     if (URL !== "/login") {
-//       router.push("/login");
-//       store.dispatch("logout");
-
-//       return Promise.reject(error);
-//     }
-
-//     return Promise.reject(error);
-//   }
-// );
+instance.interceptors.response.use(
+  (response) => response,
+  (error) => {
+    // TODO this does nothing bad for app - dont look
+    return Promise.reject(error);
+  }
+);
 
 export default instance;
