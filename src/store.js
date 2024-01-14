@@ -4,6 +4,7 @@ import {
   fetchUserList,
   createNewList,
   getListById,
+  detachUser,
 } from "./api/api";
 
 export default {
@@ -34,6 +35,21 @@ export default {
       }
 
       state.list = newList;
+    },
+    removeList(state, listId) {
+      const newList = state.list;
+
+      newList.find((l) => l.id === listId);
+
+      if (newList) {
+        const idx = newList.indexOf(newList);
+
+        if (idx) {
+          newList.splice(idx, 1);
+        }
+
+        state.list = newList;
+      }
     },
   },
   actions: {
@@ -73,6 +89,16 @@ export default {
         const response = await getListById(listId);
 
         commit("updateList", response.data);
+      } catch (error) {
+        return Promise.reject(error);
+      }
+    },
+    async detachUserFromList({ commit }, { listId, userId }) {
+      try {
+        const response = await detachUser(listId, userId);
+
+        //commit("removeList", listId);
+        return Promise.resolve(response.data.message);
       } catch (error) {
         return Promise.reject(error);
       }

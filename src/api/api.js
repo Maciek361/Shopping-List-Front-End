@@ -38,8 +38,8 @@ const getListById = (id) => {
   return Axios.get(`/shopping/${id}`);
 };
 
-const detachUserFromList = (listId, userId) => {
-  return Axios.delete(`/shopping/${listId}/users/${userId}`);
+const detachUser = (listId, userId) => {
+  return Axios.delete(`/user/${userId}/shoppings/${listId}`);
 };
 
 const updateProductQuantity = (listId, productId, quantity) => {
@@ -70,7 +70,7 @@ export {
   detachProductFromList,
   getProductByName,
   getListById,
-  detachUserFromList,
+  detachUser,
   updateProductQuantity,
   updateChecked,
 }; //po przecinku kolejne

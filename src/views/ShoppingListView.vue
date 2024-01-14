@@ -91,7 +91,6 @@ import { format } from "date-fns";
 import {
   attachProductToList,
   detachProductFromList,
-  detachUserFromList,
   updateProductQuantity,
   updateChecked,
 } from "../api/api";
@@ -129,12 +128,13 @@ const removeProductFromList = async (id) => {
   store.dispatch("showListById", props.id);
 };
 
-const removeUserFromList = async () => {
-  const response = await detachUserFromList(props.id, userId.value);
-
-  store.dispatch("showListById", props.id);
-
-  router.push("/");
+const removeUserFromList = () => {
+  store
+    .dispatch("detachUserFromList", { listId: props.id, userId: userId.value })
+    .then(() => {
+      // TODO show message
+      router.push("/");
+    });
 };
 
 const updateCheckedForProduct = async ({ id }, checked) => {
