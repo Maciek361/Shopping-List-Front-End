@@ -45,19 +45,19 @@ const detachUser = (listId, userId) => {
 const updateProductQuantity = (listId, productId, quantity) => {
   return Axios.post(
     `/shopping/${listId}/products/${productId}/update-quantity`,
-    {
-      quantity,
-    }
+    { quantity }
   );
 };
 
 const updateChecked = (listId, productId, checked) => {
   return Axios.post(
     `/shopping/${listId}/products/${productId}/update-checked`,
-    {
-      checked,
-    }
+    { checked }
   );
+};
+
+const shareList = (listId, email) => {
+  return Axios.post(`/shopping/${listId}/share`, { email });
 };
 
 export {
@@ -73,4 +73,5 @@ export {
   detachUser,
   updateProductQuantity,
   updateChecked,
+  shareList,
 }; //po przecinku kolejne

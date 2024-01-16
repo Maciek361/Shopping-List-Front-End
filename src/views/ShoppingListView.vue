@@ -64,7 +64,7 @@
     </div>
     <div class="shopping-list-view-bottom rounded-xl">
       <div class="flex justify-around my-4 py-4">
-        <button>
+        <button @click="showShareModal">
           <Icon
             class="text-2xl"
             color="white"
@@ -82,6 +82,13 @@
       </div>
     </div>
   </div>
+  <dialog ref="dialogRef">
+    <ShareDialogContent
+      @on-confirm="(v) => onShareConfirm(v)"
+      @on-close="onShareClose"
+      :message="shareMessage"
+    />
+  </dialog>
 </template>
 <script setup>
 import { Icon } from "@iconify/vue";
@@ -93,8 +100,10 @@ import {
   detachProductFromList,
   updateProductQuantity,
   updateChecked,
+  shareList,
 } from "../api/api";
 import MTomSelect from "../components/TomSelect/MTomSelect.vue";
+import ShareDialogContent from "../components/ShareDialog/ShareDialogContent.vue";
 import router from "../router";
 
 const store = useStore();
@@ -105,6 +114,8 @@ const shoppingList = computed(() =>
   store.getters.getShoppingListById(props.id)
 );
 const productId = ref(null);
+const dialogRef = ref(null);
+const shareMessage = ref("a");
 
 const onChange = ({ value }) => {
   productId.value = value;
@@ -145,6 +156,29 @@ const updateCheckedForProduct = async ({ id }, checked) => {
   console.log(shoppingList.value);
 };
 
+const showShareModal = () => {
+  dialogRef.value.showModal();
+};
+
+const onShareConfirm = ({ email }) => {
+  console.log("ShoppingListView: ", email);
+
+  shareList(props.id, email)
+    .then((response) => {
+      shareMessage.value = { text: response.data.message, success: true };
+    })
+    .catch((error) => {
+      shareMessage.value = {
+        text: error.response.data.message,
+        success: false,
+      };
+    });
+};
+
+const onShareClose = () => {
+  dialogRef.value.close();
+};
+
 const formatCreatedAt = (createdAt) => {
   return format(new Date(createdAt), "yyyy-MM-dd HH:mm:ss");
 };
@@ -156,5 +190,10 @@ body {
 .card {
   width: 380px;
   height: 800;
+}
+
+dialog::backdrop {
+  background-color: black;
+  opacity: 0.54;
 }
 </style>
