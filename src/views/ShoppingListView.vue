@@ -1,24 +1,30 @@
 <template>
-  <div class="shopping-list-view shopping-list">
-    <div class="shopping-list-view-content-header flex flex-col bg-green-900">
-      <router-link class="pt-2 pl-2" to="/">
+  <div class="shopping-list-view">
+    <div
+      class="shopping-list-view-content-header bg-green-900 mt-2 rounded-t-xl"
+    >
+      <!-- <router-link class="4 pl-2" to="/">
         <button>
           <Icon icon="mdi:arrow-left" color="white" class="w-5 h-5" />
         </button>
-      </router-link>
-      <div class="header-top flex justify-around items-center">
+      </router-link> -->
+      <div class="header-top flex flex-col justify-around items-center p-3">
         <p class="text-xl font-bold text-white">{{ shoppingList.name }}</p>
+        <p class="text-xs text-slate-200 text-center mb-1">
+          Data utworzenia: {{ formatCreatedAt(shoppingList.created_at) }}
+        </p>
       </div>
-      <p class="text-xs text-slate-200 text-center mb-1">
-        Data utworzenia: {{ formatCreatedAt(shoppingList.created_at) }}
-      </p>
     </div>
-    <div class="shopping-list-view-content bg-white p-2 rounded-t-xl">
+    <div class="shopping-list-view-content bg-white p-2">
       <div class="add-to-list-wrapper flex gap-2">
         <MTomSelect class="flex-1" @on-change="(v) => onChange(v)" />
       </div>
-      <div class="bg-white rounded-b-xl">
-        <ul v-for="category in shoppingList.categories" :key="category.id">
+      <div class="bg-white rounded-b-xl overflow-auto shopping-list">
+        <ul
+          class=""
+          v-for="category in shoppingList.categories"
+          :key="category.id"
+        >
           <div class="flex items-center mt-4">
             <button>
               <!-- @click="toggleContent(category.id)" -->
@@ -74,24 +80,24 @@
           <hr class="mx-2" />
         </ul>
       </div>
-    </div>
-    <div class="shopping-list-view-bottom rounded-xl bg-green-900">
-      <div class="flex justify-around my-4 py-4">
-        <button @click="showShareModal">
-          <Icon
-            class="text-2xl"
-            color="white"
-            icon="material-symbols:share-outline"
-          ></Icon>
-        </button>
-        <button>
-          <router-link to="/">
-            <Icon color="white" class="text-2xl" icon="tabler:home"></Icon>
-          </router-link>
-        </button>
-        <button @click="removeUserFromList">
-          <Icon icon="bi:trash" color="white" class="text-2xl"></Icon>
-        </button>
+      <div class="shopping-list-view-bottom rounded-xl bg-green-900">
+        <div class="flex justify-around my-4 py-4">
+          <button @click="showShareModal">
+            <Icon
+              class="text-2xl"
+              color="white"
+              icon="material-symbols:share-outline"
+            ></Icon>
+          </button>
+          <button>
+            <router-link to="/">
+              <Icon color="white" class="text-2xl" icon="tabler:home"></Icon>
+            </router-link>
+          </button>
+          <button @click="removeUserFromList">
+            <Icon icon="bi:trash" color="white" class="text-2xl"></Icon>
+          </button>
+        </div>
       </div>
     </div>
   </div>
@@ -156,7 +162,7 @@ const removeUserFromList = () => {
   store
     .dispatch("detachUserFromList", { listId: props.id, userId: userId.value })
     .then(() => {
-      // TODO show message
+      store.dispatch("userListFetch", userId.value);
       router.push("/");
     });
 };
@@ -205,9 +211,17 @@ const formatCreatedAt = (createdAt) => {
 body {
   /* background-color: rgb(22 163 74); */
 }
-.shopping-list {
+/* .shopping-list {
   width: 700px;
-  height: 800;
+  max-height: 400px;
+  min-height: 150px;
+} */
+@media (min-width: 1060px) {
+  .shopping-list {
+    width: 600px;
+    max-height: 400px;
+    min-height: 150px;
+  }
 }
 dialog::backdrop {
   background-color: black;

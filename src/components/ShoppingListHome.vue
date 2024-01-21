@@ -1,70 +1,57 @@
 <template>
-  <div class="shopping-list-view">
+  <div class="shopping-list-view background-home">
     <div
       class="shopping-list-view-content-header flex flex-col bg-green-900 p-2"
     >
       <div class="header-top flex justify-center items-center my-4">
         <h1 class="text-xl text-white">Listy zakupowe</h1>
       </div>
-      <!-- <p class="text-xs text-slate-400 text-center">
-        Data utworzenia: {{ formatCreatedAt(shoppingList.created_at) }}
-      </p> -->
     </div>
-    <div class="shopping-list-view-content p-2 bg-white rounded-xl">
-      <h6 class="text-slate-600 text-lg font-bold py-5 ml-4">
-        Utworzone listy
-      </h6>
-      <hr class="mx-2 mb-3" />
+    <div class="shopping-list-view-content p-2">
+      <h6 class="text-lg font-bold py-2 ml-4">Utworzone listy</h6>
 
-      <div class="flex">
+      <div class="md:flex">
         <div
           v-if="!shoppingLists.length"
           class="no-lists text-lg font-bold pt-7 ml-4"
         >
           Brak utworzonych list!
         </div>
-        <ul v-else>
-          <li
-            class="flex mx-3 items-center text-white p-3 mb-3 card rounded-lg shadow-md"
-            :style="{ backgroundColor: getColorForList(item.id) }"
-            v-for="item in shoppingLists"
-            :key="item.id"
-            @click="() => openShoppingList(item.id)"
-          >
-            <div class="rounded-full"></div>
-            <div class="items-center ml-3">
-              <p class="font-bold">{{ item.name }}</p>
-              <p class="text-xs text-white">
-                Utworzono: {{ formatCreatedAt(item.created_at) }}
-              </p>
-            </div>
-
-            <!-- <button >
-              <Icon icon="mdi:chevron-right" class="w-5 h-5" />
-            </button> -->
-            <span class="ml-auto mr-2 block">
-              {{ checkedProductsCount(item) }}/{{
-                item.quantities.length
-              }}</span
+        <ul v-else class="mt-2">
+          <div class="card-container">
+            <li
+              class="flex mx-3 items-center text-white p-3 mb-3 card rounded-lg shadow-md"
+              :style="{ backgroundColor: getColorForList(item.id) }"
+              v-for="item in shoppingLists"
+              :key="item.id"
+              @click="() => openShoppingList(item.id)"
             >
-          </li>
+              <div class="items-center ml-3">
+                <p class="font-bold">{{ item.name }}</p>
+                <p class="text-xs text-white">
+                  Utworzono: {{ formatCreatedAt(item.created_at) }}
+                </p>
+              </div>
+
+              <span class="ml-auto mr-2 block">
+                {{ checkedProductsCount(item) }}/{{
+                  item.quantities.length
+                }}</span
+              >
+            </li>
+          </div>
         </ul>
-        <ShoppingListView
-          v-if="selectedList != null"
-          :id="selectedList"
-        ></ShoppingListView>
+        <div class="flex justify-center">
+          <ShoppingListView
+            class=""
+            v-if="selectedList != null"
+            :id="selectedList"
+          ></ShoppingListView>
+        </div>
       </div>
     </div>
-
-    <div class="shopping-list-view-bottom bg-green-900">
-      <div class="flex justify-around my-4 rounded-t-xl py-4">
-        <button>
-          <Icon
-            class="text-2xl"
-            color="white"
-            icon="material-symbols:search"
-          ></Icon>
-        </button>
+    <div class="shopping-list-view-bottom bg-green-900 fixed bottom-0 w-full">
+      <div class="flex justify-around rounded-t-xl py-2">
         <button @click="showCreateListModal">
           <Icon color="white" class="text-2xl" icon="lucide:plus"></Icon>
         </button>
@@ -77,7 +64,7 @@
   <dialog ref="dialogRef">
     <CreateListDialogContent
       @on-confirm="(v) => confirmCreate(v)"
-      @on-close="confirmCreate"
+      @on-close="confirmCreate || CreateListClose"
     />
   </dialog>
 </template>
@@ -103,7 +90,7 @@ onMounted(() => {
 const openShoppingList = (listId) => {
   const screenWidth = window.innerWidth;
 
-  const thresholdWidth = 600;
+  const thresholdWidth = 700;
 
   if (screenWidth < thresholdWidth) {
     router.push({ name: "showShoppingList", params: { id: listId } });
@@ -123,6 +110,9 @@ const selectedList = ref(null);
 const showCreateListModal = () => {
   dialogRef.value.showModal();
 };
+const CreateListClose = () => {
+  dialogRef.value.close();
+};
 function getColorForList(listId) {
   const colors = ["#16a34a", "#15803d", "#166534", "#14532d"];
   const colorIndex = (listId - 1) % colors.length;
@@ -139,11 +129,18 @@ const formatCreatedAt = (createdAt) => {
 };
 </script>
 <style>
+body {
+  background-image: url("../assets/HomePage12.jpg");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-attachment: fixed;
+  background-repeat: cover;
+}
+
 .card {
-  /* height: 100%;
-    min-width: 328px; */
-  width: 380px;
-  height: 800;
+  /* height: 100%; */
+
+  /* width: 380px; */
   background: #f8f8f8;
   transform: scale(1);
   transition: all 0.3s ease-in-out;
@@ -151,6 +148,18 @@ const formatCreatedAt = (createdAt) => {
 .card:hover {
   box-shadow: 0px 0px 30px rgba(0, 0, 0, 0.2);
   transform: scale(1.05);
+}
+@media (min-width: 1060px) {
+  .card {
+    width: 400px;
+    /* max-height: 400px;
+    min-height: 150px; */
+  }
+}
+@media (max-width: 699px) {
+  .element {
+    width: 100%;
+  }
 }
 .btn-size {
   width: 320px;
