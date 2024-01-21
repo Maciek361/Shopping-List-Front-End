@@ -137,10 +137,10 @@ const createShoppingList = () => {
 </script>
 <style>
 body {
-  background-color: antiquewhite;
+  /* background-color: antiquewhite; */
 }
-.card {
+/* .card {
   width: 380px;
   height: 800;
-}
+} */
 </style>

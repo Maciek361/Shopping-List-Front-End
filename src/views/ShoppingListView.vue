@@ -1,12 +1,12 @@
 <template>
-  <div class="shopping-list-view">
-    <div class="shopping-list-view-content-header flex flex-col bg-green-600">
+  <div class="shopping-list-view shopping-list">
+    <div class="shopping-list-view-content-header flex flex-col bg-green-900">
       <router-link class="pt-2 pl-2" to="/">
         <button>
           <Icon icon="mdi:arrow-left" color="white" class="w-5 h-5" />
         </button>
       </router-link>
-      <div class="header-top flex justify-around items-center mb-3">
+      <div class="header-top flex justify-around items-center">
         <p class="text-xl font-bold text-white">{{ shoppingList.name }}</p>
       </div>
       <p class="text-xs text-slate-200 text-center mb-1">
@@ -16,34 +16,41 @@
     <div class="shopping-list-view-content bg-white p-2 rounded-t-xl">
       <div class="add-to-list-wrapper flex gap-2">
         <MTomSelect class="flex-1" @on-change="(v) => onChange(v)" />
-        <button
-          @click="addToList()"
-          class="bg-green-600 rounded-lg text-white p-2"
-        >
-          <Icon icon="fluent-mdl2:accept-medium" class="w-5 h-5" />
-        </button>
       </div>
       <div class="bg-white rounded-b-xl">
         <ul v-for="category in shoppingList.categories" :key="category.id">
-          <h6 class="text-sm text-slate-500 font-bold mt-8 ml-5">
-            {{ category.category_name }}
-          </h6>
-
+          <div class="flex items-center mt-4">
+            <button>
+              <!-- @click="toggleContent(category.id)" -->
+              <Icon class="w-5 h-5" icon="mdi:chevron-up"></Icon>
+              <!-- :icon="
+                  isCategoryExpanded[category.id]
+                    ? 'mdi:chevron-up'
+                    : 'mdi:chevron-down'
+                " -->
+            </button>
+            <h6 class="text-sm text-slate-500 font-bold ml-2">
+              {{ category.category_name }}
+            </h6>
+          </div>
+          <!-- v-if="isCategoryExpanded[category.id]" -->
           <li
-            class="flex mx-5 my-2 items-center"
+            class="flex mx-5 my-3 items-center"
             v-for="product in category.products"
             :key="product.id"
           >
-            <label class="flex items-center">
+            <label class="flex items-center ml-2">
               <input
                 type="checkbox"
-                class="w-5 h-5"
+                class="w-5 h-5 rounded-xl"
                 :checked="product.checked"
                 @change="
                   (e) => updateCheckedForProduct(product, e.target.checked)
                 "
               />
-              <span class="ml-3">{{ product.name }}</span>
+              <span :class="{ 'line-through': product.checked }" class="ml-3">{{
+                product.name
+              }}</span>
             </label>
             <input
               placeholder="x"
@@ -55,14 +62,20 @@
             />
             <!-- @change="updateQuantity(product.quantity, product.id)" -->
             <button @click="removeProductFromList(product.id)">
-              <Icon icon="bi:trash-fill" color="grey"></Icon>
+              <Icon icon="bi:trash-fill" color="grey "></Icon>
             </button>
+            <!-- <progress
+              class=""
+              v-if="product.quantity"
+              :value="checkedProductsCount(product)"
+              :max="product.quantity.length"
+            ></progress> -->
           </li>
           <hr class="mx-2" />
         </ul>
       </div>
     </div>
-    <div class="shopping-list-view-bottom rounded-xl">
+    <div class="shopping-list-view-bottom rounded-xl bg-green-900">
       <div class="flex justify-around my-4 py-4">
         <button @click="showShareModal">
           <Icon
@@ -105,26 +118,26 @@ import {
 import MTomSelect from "../components/TomSelect/MTomSelect.vue";
 import ShareDialogContent from "../components/ShareDialog/ShareDialogContent.vue";
 import router from "../router";
-
 const store = useStore();
 const props = defineProps(["id"]);
 const userId = computed(() => store.getters.getUserId);
-
+console.log("sprwadzenie propsa", props.id);
 const shoppingList = computed(() =>
   store.getters.getShoppingListById(props.id)
 );
+console.log("lista z shoppingListView", shoppingList);
 const productId = ref(null);
 const dialogRef = ref(null);
 const shareMessage = ref("a");
-
-const onChange = ({ value }) => {
-  productId.value = value;
-};
 
 const addToList = async () => {
   const response = await attachProductToList(props.id, productId.value);
   // TODO show toast/modal (Produkt zostal dodany etc) (use response)
   store.dispatch("showListById", props.id);
+};
+const onChange = ({ value }) => {
+  productId.value = value;
+  addToList();
 };
 
 const updateQuantity = async ({ id }, event) => {
@@ -178,6 +191,11 @@ const onShareConfirm = ({ email }) => {
 const onShareClose = () => {
   dialogRef.value.close();
 };
+const isCategoryExpanded = ref({});
+
+const toggleContent = (categoryId) => {
+  isCategoryExpanded.value[categoryId] = !isCategoryExpanded.value[categoryId];
+};
 
 const formatCreatedAt = (createdAt) => {
   return format(new Date(createdAt), "yyyy-MM-dd HH:mm:ss");
@@ -185,13 +203,12 @@ const formatCreatedAt = (createdAt) => {
 </script>
 <style>
 body {
-  background-color: rgb(22 163 74);
+  /* background-color: rgb(22 163 74); */
 }
-.card {
-  width: 380px;
+.shopping-list {
+  width: 700px;
   height: 800;
 }
-
 dialog::backdrop {
   background-color: black;
   opacity: 0.54;
