@@ -16,7 +16,7 @@
       </h6>
       <hr class="mx-2 mb-3" />
 
-      <div>
+      <div class="flex">
         <div
           v-if="!shoppingLists.length"
           class="no-lists text-lg font-bold pt-7 ml-4"
@@ -49,10 +49,11 @@
             >
           </li>
         </ul>
+        <ShoppingListView
+          v-if="selectedList != null"
+          :id="selectedList"
+        ></ShoppingListView>
       </div>
-      <!-- <ShoppingListView 
-      
-      ></ShoppingListView> -->
     </div>
 
     <div class="shopping-list-view-bottom bg-green-900">
@@ -100,7 +101,16 @@ onMounted(() => {
 });
 
 const openShoppingList = (listId) => {
-  router.push({ name: "showShoppingList", params: { id: listId } });
+  const screenWidth = window.innerWidth;
+
+  const thresholdWidth = 600;
+
+  if (screenWidth < thresholdWidth) {
+    router.push({ name: "showShoppingList", params: { id: listId } });
+  } else {
+    selectedList.value = listId;
+    console.log("Id w które kliknąłem", selectedList.value);
+  }
 };
 
 const confirmCreate = ({ name }) => {
