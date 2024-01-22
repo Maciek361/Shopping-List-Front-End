@@ -19,6 +19,9 @@
       <div class="add-to-list-wrapper flex gap-2">
         <MTomSelect class="flex-1" @on-change="(v) => onChange(v)" />
       </div>
+      <div v-for="item in categories" :key="item.id">
+        {{ item.category_name }}
+      </div>
       <div class="bg-white rounded-b-xl overflow-auto shopping-list">
         <ul
           class=""
@@ -89,6 +92,9 @@
               icon="material-symbols:share-outline"
             ></Icon>
           </button>
+          <button @click="">
+            <Icon color="white" class="text-2xl" icon="lucide:plus"></Icon>
+          </button>
           <button>
             <router-link class="lg:hidden" to="/">
               <Icon color="white" class="text-2xl" icon="tabler:home"></Icon>
@@ -111,7 +117,7 @@
 </template>
 <script setup>
 import { Icon } from "@iconify/vue";
-import { ref, computed } from "vue";
+import { ref, computed, onMounted } from "vue";
 import { useStore } from "vuex";
 import { format } from "date-fns";
 import {
@@ -120,12 +126,15 @@ import {
   updateProductQuantity,
   updateChecked,
   shareList,
+  fetchCategory,
 } from "../api/api";
 import MTomSelect from "../components/TomSelect/MTomSelect.vue";
 import ShareDialogContent from "../components/ShareDialog/ShareDialogContent.vue";
 import router from "../router";
 const store = useStore();
 const props = defineProps(["id"]);
+const categories = ref([]);
+
 const userId = computed(() => store.getters.getUserId);
 console.log("sprwadzenie propsa", props.id);
 const shoppingList = computed(() =>
@@ -135,7 +144,14 @@ console.log("lista z shoppingListView", shoppingList);
 const productId = ref(null);
 const dialogRef = ref(null);
 const shareMessage = ref("a");
-
+onMounted(async () => {
+  try {
+    const response = await fetchCategory();
+    categories.value = response.data;
+  } catch (error) {
+    console.error(error);
+  }
+});
 const addToList = async () => {
   const response = await attachProductToList(props.id, productId.value);
   // TODO show toast/modal (Produkt zostal dodany etc) (use response)

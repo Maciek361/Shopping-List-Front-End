@@ -21,7 +21,12 @@ const fetchUserList = (userId) => {
 const createNewList = (formData) => {
   return Axios.post("/shopping", formData);
 };
-
+const addNewProduct = (productData) => {
+  return Axios.post("/product", productData);
+};
+const fetchCategory = () => {
+  return Axios.get("/category");
+};
 const attachProductToList = (listId, productId) => {
   return Axios.post(`/shopping/${listId}/products/${productId}`);
 };
@@ -74,4 +79,6 @@ export {
   updateProductQuantity,
   updateChecked,
   shareList,
+  addNewProduct,
+  fetchCategory,
 }; //po przecinku kolejne
