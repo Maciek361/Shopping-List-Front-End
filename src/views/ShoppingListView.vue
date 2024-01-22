@@ -15,12 +15,9 @@
         </p>
       </div>
     </div>
-    <div class="shopping-list-view-content bg-white p-2 opacity-80">
+    <div class="shopping-list-view-content bg-white p-2 opacity-90">
       <div class="add-to-list-wrapper flex gap-2">
         <MTomSelect class="flex-1" @on-change="(v) => onChange(v)" />
-      </div>
-      <div v-for="item in categories" :key="item.id">
-        {{ item.category_name }}
       </div>
       <div class="bg-white rounded-b-xl overflow-auto shopping-list">
         <ul
@@ -29,7 +26,7 @@
           :key="category.id"
         >
           <div class="flex items-center mt-4">
-            <button>
+            <button class="mb-1">
               <!-- @click="toggleContent(category.id)" -->
               <Icon class="w-5 h-5" icon="mdi:chevron-up"></Icon>
               <!-- :icon="
@@ -38,20 +35,20 @@
                     : 'mdi:chevron-down'
                 " -->
             </button>
-            <h6 class="text-sm text-slate-500 font-bold ml-2">
+            <h6 class="text-sm text-slate-500 font-bold ml-2 mb-1">
               {{ category.category_name }}
             </h6>
           </div>
           <!-- v-if="isCategoryExpanded[category.id]" -->
           <li
-            class="flex mx-5 my-3 items-center"
+            class="flex mx-5 items-center"
             v-for="product in category.products"
             :key="product.id"
           >
             <label class="flex items-center ml-2">
               <input
                 type="checkbox"
-                class="w-5 h-5 rounded-xl"
+                class="w-4 h-4 rounded-xl"
                 :checked="product.checked"
                 @change="
                   (e) => updateCheckedForProduct(product, e.target.checked)
@@ -63,14 +60,14 @@
             </label>
             <input
               placeholder="x"
-              class="text-sm ml-auto mr-2 block w-6 h-6 border rounded-md text-center"
+              class="text-sm ml-auto mr-2 block w-5 h-5 border rounded-md text-center"
               type="text"
               maxlength="2"
               :value="product.quantity"
               @change="(value) => updateQuantity(product, value)"
             />
             <!-- @change="updateQuantity(product.quantity, product.id)" -->
-            <button @click="removeProductFromList(product.id)">
+            <button class="ml-1" @click="removeProductFromList(product.id)">
               <Icon icon="bi:trash-fill" color="grey "></Icon>
             </button>
             <!-- <progress
@@ -80,7 +77,7 @@
               :max="product.quantity.length"
             ></progress> -->
           </li>
-          <hr class="mx-2" />
+          <hr class="mx-2 my-1" />
         </ul>
       </div>
       <div class="shopping-list-view-bottom rounded-xl bg-green-900">
@@ -92,35 +89,18 @@
               icon="material-symbols:share-outline"
             ></Icon>
           </button>
-          <button @click="">
+          <button @click="showAddProductModal">
             <Icon color="white" class="text-2xl" icon="lucide:plus"></Icon>
           </button>
-          <button>
+          <!-- <button>
             <router-link class="lg:hidden" to="/">
               <Icon color="white" class="text-2xl" icon="tabler:home"></Icon>
             </router-link>
-          </button>
+          </button> -->
           <button @click="removeUserFromList">
             <Icon icon="bi:trash" color="white" class="text-2xl"></Icon>
           </button>
         </div>
-      </div>
-      <div>
-        <label>Nazwa produktu:</label>
-        <input v-model="productName" />
-
-        <label>Kategoria:</label>
-        <div v-for="item in categories" :key="item.id">
-          <input
-            type="radio"
-            :id="`category-${item.id}`"
-            :value="item.id"
-            v-model="selectedCategory"
-          />
-          <label :for="`category-${item.id}`">{{ item.category_name }}</label>
-        </div>
-
-        <button @click="addProduct">Dodaj Produkt</button>
       </div>
     </div>
   </div>
@@ -130,6 +110,43 @@
       @on-close="onShareClose"
       :message="shareMessage"
     />
+  </dialog>
+  <dialog class="rounded-xl" ref="addProductDialogRef">
+    <div class="">
+      <!-- <button @on-close="onAddProductModalClose">x</button> -->
+      <p class="text-xl">Dodaj nowy produkt</p>
+      <hr />
+      <input
+        v-model="productName"
+        class="py-2 my-2 w-full"
+        type="text"
+        name="name"
+        maxlength="25"
+        placeholder="Podaj nazwę produktu"
+      />
+
+      <p class="text-lg mb-2">Kategoria:</p>
+      <hr />
+      <div class="grid lg:grid-cols-3 grid-cols-2 gap-4 mt-2">
+        <div v-for="item in categories" :key="item.id">
+          <input
+            type="radio"
+            :id="`category-${item.id}`"
+            :value="item.id"
+            v-model="selectedCategory"
+          />
+          <label class="ml-2" :for="`category-${item.id}`">{{
+            item.category_name
+          }}</label>
+        </div>
+      </div>
+      <hr class="mt-2" />
+      <div class="flex mt-3">
+        <button class="bg-green-900 p-2 rounded-lg ml-auto" @click="addProduct">
+          <span class="text-white"> Dodaj Produkt</span>
+        </button>
+      </div>
+    </div>
   </dialog>
 </template>
 <script setup>
@@ -148,6 +165,7 @@ import {
 } from "../api/api";
 import MTomSelect from "../components/TomSelect/MTomSelect.vue";
 import ShareDialogContent from "../components/ShareDialog/ShareDialogContent.vue";
+import AddProductDialogContent from "../components/AddProductDialog/AddProductDialogContent.vue";
 import router from "../router";
 const store = useStore();
 const props = defineProps(["id"]);
@@ -162,6 +180,7 @@ const shoppingList = computed(() =>
 console.log("lista z shoppingListView", shoppingList);
 const productId = ref(null);
 const dialogRef = ref(null);
+const addProductDialogRef = ref(null);
 const shareMessage = ref("a");
 
 // onMounted(async () => {
@@ -236,7 +255,12 @@ const updateCheckedForProduct = async ({ id }, checked) => {
 const showShareModal = () => {
   dialogRef.value.showModal();
 };
-
+const showAddProductModal = () => {
+  addProductDialogRef.value.showModal();
+};
+const onAddProductModalClose = () => {
+  addProductDialogRef.value.close();
+};
 const onShareConfirm = ({ email }) => {
   console.log("ShoppingListView: ", email);
 

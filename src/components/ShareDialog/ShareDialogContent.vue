@@ -19,7 +19,7 @@
       {{ message.text }}
     </p>
     <div class="flex justify-between">
-      <button class="bg-green-600 p-2 rounded text-white" @click="confirmShare">
+      <button class="bg-green-900 p-2 rounded text-white" @click="confirmShare">
         Potwierdz
       </button>
       <button @click="onClose">Anuluj</button>

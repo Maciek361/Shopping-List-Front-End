@@ -45,7 +45,7 @@
 
         <button
           type="submit"
-          class="bg-green-600 text-white px-4 py-2 rounded focus:outline-none hover:bg-green-700 w-full"
+          class="bg-green-900 text-white px-4 py-2 rounded focus:outline-none hover:bg-green-700 w-full"
           @click="loginFunction"
         >
           Zaloguj

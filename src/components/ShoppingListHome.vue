@@ -3,7 +3,7 @@
     <div
       class="shopping-list-view-content-header flex flex-col bg-green-900 p-2"
     >
-      <div class="header-top flex justify-center items-center my-4">
+      <div class="header-top flex justify-center items-center m3-4">
         <h1 class="text-xl text-white">Listy zakupowe</h1>
       </div>
     </div>
@@ -130,7 +130,7 @@ const closeUserPanelModal = () => {
   userDialogRef.value.close();
 };
 function getColorForList(listId) {
-  const colors = ["#16a34a", "#15803d", "#166534", "#14532d"];
+  const colors = ["#14532d"];
   const colorIndex = (listId - 1) % colors.length;
   return colors[colorIndex];
 }
