@@ -55,16 +55,25 @@
         <button @click="showCreateListModal">
           <Icon color="white" class="text-2xl" icon="lucide:plus"></Icon>
         </button>
-        <button @click="router.push('user')">
+        <!-- <button @click="router.push('user')">
+          <Icon color="white" class="text-2xl" icon="clarity:user-line"></Icon>
+        </button> -->
+        <button @click="showUserPanelModal">
           <Icon color="white" class="text-2xl" icon="clarity:user-line"></Icon>
         </button>
       </div>
     </div>
   </div>
-  <dialog ref="dialogRef">
+  <dialog class="rounded-xl" ref="dialogRef">
     <CreateListDialogContent
       @on-confirm="(v) => confirmCreate(v)"
-      @on-close="confirmCreate || CreateListClose"
+      @on-close="CreateListClose"
+    />
+  </dialog>
+  <dialog class="rounded-xl" ref="userDialogRef">
+    <UserPanelDialogContent
+      @on-confirm="handleLogout"
+      @on-close="closeUserPanelModal"
     />
   </dialog>
 </template>
@@ -75,11 +84,12 @@ import { useStore } from "vuex";
 import router from "../router";
 import { format } from "date-fns";
 import CreateListDialogContent from "../components/CreateListDialog/CreateListDialogContent.vue";
+import UserPanelDialogContent from "../components/UserPanelDialog/UserPanelDialogContent.vue";
 
 import ShoppingListView from "../views/ShoppingListView.vue";
 const store = useStore();
 const dialogRef = ref(null);
-
+const userDialogRef = ref(null);
 const shoppingLists = computed(() => store.getters.getShoppingLists);
 const userId = computed(() => store.getters.getUserId);
 
@@ -110,8 +120,14 @@ const selectedList = ref(null);
 const showCreateListModal = () => {
   dialogRef.value.showModal();
 };
+const showUserPanelModal = () => {
+  userDialogRef.value.showModal();
+};
 const CreateListClose = () => {
   dialogRef.value.close();
+};
+const closeUserPanelModal = () => {
+  userDialogRef.value.close();
 };
 function getColorForList(listId) {
   const colors = ["#16a34a", "#15803d", "#166534", "#14532d"];
@@ -123,6 +139,12 @@ const checkedProductsCount = (item) => {
   return item.quantities
     ? item.quantities.filter((quantity) => quantity.checked === 1).length
     : 0;
+};
+
+const handleLogout = () => {
+  store.dispatch("logout").then(() => {
+    router.push("login");
+  });
 };
 const formatCreatedAt = (createdAt) => {
   return format(new Date(createdAt), "dd-MM-yyyy");

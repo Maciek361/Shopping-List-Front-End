@@ -2,6 +2,7 @@
   <div class="share-dialog-content flex flex-col gap-6 p-5">
     <p class="text-xl">Utwórz nową listę</p>
     <input
+      class="py-2"
       v-model="name"
       type="text"
       name="name"

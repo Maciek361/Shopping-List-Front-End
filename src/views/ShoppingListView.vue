@@ -3,11 +3,11 @@
     <div
       class="shopping-list-view-content-header bg-green-900 mt-2 rounded-t-xl"
     >
-      <!-- <router-link class="4 pl-2" to="/">
-        <button>
+      <router-link class="pl-2 md:hidden pt-2" to="/">
+        <button class="mt-2">
           <Icon icon="mdi:arrow-left" color="white" class="w-5 h-5" />
         </button>
-      </router-link> -->
+      </router-link>
       <div class="header-top flex flex-col justify-around items-center p-3">
         <p class="text-xl font-bold text-white">{{ shoppingList.name }}</p>
         <p class="text-xs text-slate-200 text-center mb-1">
@@ -15,7 +15,7 @@
         </p>
       </div>
     </div>
-    <div class="shopping-list-view-content bg-white p-2">
+    <div class="shopping-list-view-content bg-white p-2 opacity-80">
       <div class="add-to-list-wrapper flex gap-2">
         <MTomSelect class="flex-1" @on-change="(v) => onChange(v)" />
       </div>
@@ -90,7 +90,7 @@
             ></Icon>
           </button>
           <button>
-            <router-link to="/">
+            <router-link class="lg:hidden" to="/">
               <Icon color="white" class="text-2xl" icon="tabler:home"></Icon>
             </router-link>
           </button>
@@ -101,7 +101,7 @@
       </div>
     </div>
   </div>
-  <dialog ref="dialogRef">
+  <dialog class="rounded-xl" ref="dialogRef">
     <ShareDialogContent
       @on-confirm="(v) => onShareConfirm(v)"
       @on-close="onShareClose"
@@ -223,6 +223,7 @@ body {
     min-height: 150px;
   }
 }
+
 dialog::backdrop {
   background-color: black;
   opacity: 0.54;

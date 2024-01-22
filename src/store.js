@@ -122,6 +122,7 @@ export default {
   },
   getters: {
     getUserId: (state) => (state.user ? state.user.id : null),
+    getUserData: (state) => state.user,
     getShoppingLists: (state) => state.list,
     isUserAuthenticated: (state) => state.user != null,
     getShoppingListById: (state) => (id) => {
