@@ -66,7 +66,7 @@
               v-model="form.password_confirmation"
               id="repeat-password"
               name="repeat-password"
-              type="password"
+              :type="showPassword ? 'text' : 'password'"
               class="w-full p-2 border border-gray-300 rounded focus:outline-none focus:border-green-600 pr-10"
             />
             <span
