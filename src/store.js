@@ -22,12 +22,7 @@ export default {
     setList(state, list) {
       state.list = list;
     },
-    setProduct(state, product) {
-      state.product = product;
-    },
-    setCategory(state, category) {
-      state.category = category;
-    },
+
     clearState(state) {
       state.list = [];
       state.user = null;
@@ -93,23 +88,7 @@ export default {
         return Promise.reject(error);
       }
     },
-    async categoryFetch({ commit }, categoryData) {
-      try {
-        const response = await fetchCategory(categoryData);
 
-        commit("setCategory", response.data);
-      } catch (error) {
-        return Promise.reject(error);
-      }
-    },
-    async addNewProductToDataBase({ commit }, productData) {
-      try {
-        const response = await addNewProduct(productData);
-        commit("setProduct", response.data);
-      } catch (error) {
-        return Promise.reject(error);
-      }
-    },
     async showListById({ commit }, listId) {
       try {
         const response = await getListById(listId);
@@ -149,7 +128,6 @@ export default {
   getters: {
     getUserId: (state) => (state.user ? state.user.id : null),
     getUserData: (state) => state.user,
-    getCategoryData: (state) => state.category,
     getShoppingLists: (state) => state.list,
     isUserAuthenticated: (state) => state.user != null,
     getShoppingListById: (state) => (id) => {

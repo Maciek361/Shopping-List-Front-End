@@ -105,6 +105,23 @@
           </button>
         </div>
       </div>
+      <div>
+        <label>Nazwa produktu:</label>
+        <input v-model="productName" />
+
+        <label>Kategoria:</label>
+        <div v-for="item in categories" :key="item.id">
+          <input
+            type="radio"
+            :id="`category-${item.id}`"
+            :value="item.id"
+            v-model="selectedCategory"
+          />
+          <label :for="`category-${item.id}`">{{ item.category_name }}</label>
+        </div>
+
+        <button @click="addProduct">Dodaj Produkt</button>
+      </div>
     </div>
   </div>
   <dialog class="rounded-xl" ref="dialogRef">
@@ -127,6 +144,7 @@ import {
   updateChecked,
   shareList,
   fetchCategory,
+  addNewProduct,
 } from "../api/api";
 import MTomSelect from "../components/TomSelect/MTomSelect.vue";
 import ShareDialogContent from "../components/ShareDialog/ShareDialogContent.vue";
@@ -134,9 +152,10 @@ import router from "../router";
 const store = useStore();
 const props = defineProps(["id"]);
 const categories = ref([]);
-
+const productName = ref("");
+const selectedCategory = ref(null);
 const userId = computed(() => store.getters.getUserId);
-console.log("sprwadzenie propsa", props.id);
+
 const shoppingList = computed(() =>
   store.getters.getShoppingListById(props.id)
 );
@@ -144,17 +163,40 @@ console.log("lista z shoppingListView", shoppingList);
 const productId = ref(null);
 const dialogRef = ref(null);
 const shareMessage = ref("a");
-onMounted(async () => {
-  try {
-    const response = await fetchCategory();
-    categories.value = response.data;
-  } catch (error) {
-    console.error(error);
-  }
+
+// onMounted(async () => {
+//   try {
+//     const response = await fetchCategory();
+//     categories.value = response.data;
+//   } catch (error) {
+//     console.error(error);
+//   }
+// });
+fetchCategory().then((response) => {
+  categories.value = response.data;
 });
+
+const addProduct = () => {
+  if (!productName.value || !selectedCategory.value) {
+    console.error("Wprowadź nazwę produktu i wybierz kategorię.");
+    return;
+  }
+
+  const productData = {
+    name: productName.value,
+    category_id: selectedCategory.value,
+  };
+
+  addNewProduct(productData)
+    .then((response) => {
+      console.log(response.data);
+    })
+    .catch((error) => {
+      console.error(error);
+    });
+};
 const addToList = async () => {
   const response = await attachProductToList(props.id, productId.value);
-  // TODO show toast/modal (Produkt zostal dodany etc) (use response)
   store.dispatch("showListById", props.id);
 };
 const onChange = ({ value }) => {
