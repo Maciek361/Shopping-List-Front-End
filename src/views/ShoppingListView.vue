@@ -20,11 +20,7 @@
         <MTomSelect class="flex-1" @on-change="(v) => onChange(v)" />
       </div>
       <div class="bg-white rounded-b-xl overflow-auto shopping-list">
-        <ul
-          class=""
-          v-for="category in shoppingList.categories"
-          :key="category.id"
-        >
+        <ul v-for="category in shoppingList.categories" :key="category.id">
           <div class="flex items-center mt-4">
             <button class="mb-1">
               <!-- @click="toggleContent(category.id)" -->
@@ -113,7 +109,11 @@
   </dialog>
   <dialog class="rounded-xl" ref="addProductDialogRef">
     <div class="">
-      <!-- <button @on-close="onAddProductModalClose">x</button> -->
+      <div class="flex">
+        <button @click="onAddProductModalClose" class="ml-auto">
+          <Icon icon="ph:x"></Icon>
+        </button>
+      </div>
       <p class="text-xl">Dodaj nowy produkt</p>
       <hr />
       <input
@@ -142,8 +142,17 @@
       </div>
       <hr class="mt-2" />
       <div class="flex mt-3">
-        <button class="bg-green-900 p-2 rounded-lg ml-auto" @click="addProduct">
+        <button
+          class="bg-green-900 hover:bg-green-800 p-2 rounded-lg"
+          @click="addProduct"
+        >
           <span class="text-white"> Dodaj Produkt</span>
+        </button>
+        <button
+          class="bg-slate-300 hover:bg-slate-400 p-2 rounded-lg ml-auto"
+          @click="onAddProductModalClose"
+        >
+          <span class="px-2">Anuluj</span>
         </button>
       </div>
     </div>

@@ -69,6 +69,7 @@ import router from "../router";
 import { useStore } from "vuex";
 
 const store = useStore();
+const props = defineProps(["message"]);
 
 const form = ref({
   email: "",

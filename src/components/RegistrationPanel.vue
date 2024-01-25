@@ -6,7 +6,7 @@
       <form @submit.prevent="register">
         <div class="mb-4">
           <label for="name" class="block text-gray-600 text-sm font-medium mb-2"
-            >Imię i Nazwisko</label
+            >Nazwa użytkownika</label
           >
           <input
             v-model="form.name"

@@ -5,7 +5,6 @@ import {
   createNewList,
   getListById,
   detachUser,
-  fetchCategory,
 } from "./api/api";
 
 export default {
@@ -59,13 +58,13 @@ export default {
   actions: {
     async loginUser({ commit }, userCredentials) {
       try {
-        const response = await login(userCredentials); //tutaj są dane z inputów jakie podaje jak sie loguje
+        const response = await login(userCredentials);
 
         const token = response.data.token;
 
         localStorage.setItem("userToken", token);
 
-        commit("setUser", response.data.user); //commituje tylko mutations
+        commit("setUser", response.data.user);
       } catch (error) {
         return Promise.reject(error);
       }
@@ -84,6 +83,7 @@ export default {
         const response = await createNewList(userId);
 
         commit("addToList", response.data);
+        console.log("response", response.data);
       } catch (error) {
         return Promise.reject(error);
       }

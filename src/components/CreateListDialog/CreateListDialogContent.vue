@@ -1,4 +1,9 @@
 <template>
+  <div class="flex">
+    <button @click="onClose" class="ml-auto">
+      <Icon icon="ph:x"></Icon>
+    </button>
+  </div>
   <div class="share-dialog-content flex flex-col gap-6 p-5">
     <p class="text-xl">Utwórz nową listę</p>
     <input
@@ -22,17 +27,23 @@
     </p> -->
     <div class="flex justify-between">
       <button
-        class="bg-green-900 p-2 rounded text-white"
+        class="bg-green-900 p-2 rounded-lg hover:bg-green-800 text-white"
         @click="confirmCreate"
       >
-        Potwierdz
+        Potwierdź
       </button>
-      <button @click="onClose">Anuluj</button>
+      <button
+        class="bg-slate-300 rounded-lg hover:bg-slate-400 p-2"
+        @click="onClose"
+      >
+        <span class="px-2">Anuluj</span>
+      </button>
     </div>
   </div>
 </template>
 <script setup>
 import { ref } from "vue";
+import { Icon } from "@iconify/vue";
 
 const props = defineProps(["message"]);
 

@@ -1,12 +1,11 @@
 import Axios from "./axios";
 
 const register = (payload) => {
-  return Axios.post("/register", payload); //payload to co ma iść z frontu na backend
+  return Axios.post("/register", payload);
 };
 
 const login = (payload) => {
-  // ten payload moze sie nazywa userCredientials chodzi o to co mi wysyła action ze store.js
-  return Axios.post("/login", payload); //payload to co ma iść z frontu na backend
+  return Axios.post("/login", payload);
 };
 
 const logout = () => {

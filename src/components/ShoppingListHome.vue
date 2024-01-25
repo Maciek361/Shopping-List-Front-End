@@ -69,6 +69,7 @@
       @on-confirm="(v) => confirmCreate(v)"
       @on-close="CreateListClose"
     />
+    <!-- :message="createListMessage" -->
   </dialog>
   <dialog class="rounded-xl" ref="userDialogRef">
     <UserPanelDialogContent
@@ -92,6 +93,7 @@ const dialogRef = ref(null);
 const userDialogRef = ref(null);
 const shoppingLists = computed(() => store.getters.getShoppingLists);
 const userId = computed(() => store.getters.getUserId);
+const createListMessage = ref("a");
 
 onMounted(() => {
   store.dispatch("userListFetch", userId.value);

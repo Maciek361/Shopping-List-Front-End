@@ -8,7 +8,7 @@
     <p class="text-xl">Dane użytkownika</p>
 
     <div class="flex">
-      <p class="font-bold text-slate-800">Imię i Nazwisko:</p>
+      <p class="font-bold text-slate-800">Nazwa użytkownika:</p>
       <span class="ml-2"> {{ userData.name }}</span>
     </div>
     <div class="flex">
@@ -17,7 +17,10 @@
     </div>
 
     <div class="flex">
-      <button @click="logOutUser" class="bg-slate-300 p-2 rounded-lg ml-auto">
+      <button
+        @click="logOutUser"
+        class="bg-slate-300 p-2 rounded-lg hover:bg-slate-400 ml-auto"
+      >
         Wyloguj
       </button>
     </div>
